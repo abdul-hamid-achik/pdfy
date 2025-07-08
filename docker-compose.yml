@@ -73,6 +73,8 @@ services:
       MINIO_SECRET_ACCESS_KEY: minioadmin
       MINIO_BUCKET: pdfy-development
       PORT: ${PORT:-5050}
+      ACTIVE_STORAGE_SERVICE: ${ACTIVE_STORAGE_SERVICE:-local}
+      STORAGE_ROOT: /rails/storage
     stdin_open: true
     tty: true
 
@@ -114,6 +116,8 @@ services:
       MINIO_ACCESS_KEY_ID: minioadmin
       MINIO_SECRET_ACCESS_KEY: minioadmin
       MINIO_BUCKET: pdfy-development
+      ACTIVE_STORAGE_SERVICE: ${ACTIVE_STORAGE_SERVICE:-local}
+      STORAGE_ROOT: /rails/storage
 
 volumes:
   postgres_data:
