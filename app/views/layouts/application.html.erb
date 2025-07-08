@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Pdfy" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+
+  <body class="bg-gray-50">
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <%= link_to "PDFy", root_path, class: "text-xl font-bold text-gray-900" %>
+          </div>
+          
+          <div class="flex items-center space-x-4">
+            <% if user_signed_in? %>
+              <%= link_to "Templates", pdf_templates_path, class: "text-gray-700 hover:text-gray-900" %>
+              <% if current_user.admin? %>
+                <%= link_to "Admin", admin_root_path, class: "text-gray-700 hover:text-gray-900" %>
+              <% end %>
+              <span class="text-gray-500"><%= current_user.email %></span>
+              <%= link_to "Sign out", destroy_user_session_path, 
+                  data: { turbo_method: :delete }, 
+                  class: "text-gray-700 hover:text-gray-900" %>
+            <% else %>
+              <%= link_to "Sign in", new_user_session_path, class: "text-gray-700 hover:text-gray-900" %>
+              <%= link_to "Sign up", new_user_registration_path, class: "text-gray-700 hover:text-gray-900" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <% if notice.present? %>
+      <div class="bg-green-50 border-l-4 border-green-400 p-4">
+        <p class="text-green-700"><%= notice %></p>
+      </div>
+    <% end %>
+    
+    <% if alert.present? %>
+      <div class="bg-red-50 border-l-4 border-red-400 p-4">
+        <p class="text-red-700"><%= alert %></p>
+      </div>
+    <% end %>
+
+    <main class="min-h-screen">
+      <%= yield %>
+    </main>
+  </body>
+</html>

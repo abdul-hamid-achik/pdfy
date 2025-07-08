@@ -1,0 +1,73 @@
+<div class="max-w-6xl mx-auto px-4 py-8">
+  <div class="flex justify-between items-start mb-8">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Generated PDF</h1>
+      <p class="text-gray-600">
+        From template: <%= link_to @pdf_template.name, @pdf_template, class: "text-blue-600 hover:text-blue-800" %>
+      </p>
+      <p class="text-sm text-gray-500 mt-2">
+        Generated <%= @processed_pdf.generated_at.strftime("%B %d, %Y at %l:%M %p") %>
+      </p>
+    </div>
+    <div class="flex gap-2">
+      <%= link_to "Download PDF", download_pdf_template_processed_pdf_path(@pdf_template, @processed_pdf), 
+          class: "bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700" %>
+      <%= link_to "Generate Another", new_pdf_template_processed_pdf_path(@pdf_template), 
+          class: "bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" %>
+      <%= link_to "Back to Template", @pdf_template, 
+          class: "px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div>
+      <h2 class="text-xl font-semibold mb-4">PDF Preview</h2>
+      <div class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-center" style="min-height: 600px;">
+        <% if @processed_pdf.pdf_file.attached? %>
+          <iframe src="<%= rails_blob_path(@processed_pdf.pdf_file) %>" 
+                  class="w-full h-full rounded" 
+                  style="min-height: 600px;">
+          </iframe>
+        <% else %>
+          <p class="text-gray-500 mt-8">PDF preview not available</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <% if @processed_pdf.variables_used.any? %>
+        <div class="mb-6">
+          <h2 class="text-xl font-semibold mb-4">Variables Used</h2>
+          <div class="bg-white border border-gray-200 rounded-lg p-4">
+            <dl class="space-y-2">
+              <% @processed_pdf.variables_used.each do |key, value| %>
+                <div class="flex justify-between py-2 border-b border-gray-100 last:border-0">
+                  <dt class="font-medium text-gray-700"><%= key.humanize %></dt>
+                  <dd class="text-gray-600"><%= value %></dd>
+                </div>
+              <% end %>
+            </dl>
+          </div>
+        </div>
+      <% end %>
+
+      <div>
+        <h2 class="text-xl font-semibold mb-4">Rendered HTML</h2>
+        <div class="bg-white border border-gray-200 rounded-lg p-4">
+          <div class="prose max-w-none">
+            <%= @processed_pdf.original_html.html_safe %>
+          </div>
+        </div>
+      </div>
+
+      <% if @processed_pdf.metadata.present? && @processed_pdf.metadata.any? %>
+        <div class="mt-6">
+          <h2 class="text-xl font-semibold mb-4">Metadata</h2>
+          <div class="bg-gray-50 rounded-lg p-4">
+            <pre class="text-sm text-gray-700"><%= JSON.pretty_generate(@processed_pdf.metadata) %></pre>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

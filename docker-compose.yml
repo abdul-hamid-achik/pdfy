@@ -1,0 +1,101 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: pdfy
+      POSTGRES_PASSWORD: pdfy_development
+      POSTGRES_DB: pdfy_development
+    ports:
+      - "5433:5432"  # Using 5433 to avoid conflict with 5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pdfy"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3001"
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+      - node_modules:/rails/node_modules
+    ports:
+      - "3001:3001"  # Using 3001 to avoid conflict with 3000
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://pdfy:pdfy_development@db:5432/pdfy_development
+      REDIS_URL: redis://redis:6379/0
+      RAILS_ENV: development
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      CHROME_BIN: /usr/bin/google-chrome
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY_ID: minioadmin
+      MINIO_SECRET_ACCESS_KEY: minioadmin
+      MINIO_BUCKET: pdfy-development
+    stdin_open: true
+    tty: true
+
+  css:
+    build: .
+    command: yarn build:css --watch
+    volumes:
+      - .:/rails
+      - node_modules:/rails/node_modules
+    environment:
+      RAILS_ENV: development
+
+  js:
+    build: .
+    command: yarn build --watch
+    volumes:
+      - .:/rails
+      - node_modules:/rails/node_modules
+    environment:
+      RAILS_ENV: development
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+  bundle_cache:
+  node_modules:

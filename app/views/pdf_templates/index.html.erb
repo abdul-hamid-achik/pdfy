@@ -1,0 +1,51 @@
+<div class="max-w-6xl mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-900">PDF Templates</h1>
+    <%= link_to "New Template", new_pdf_template_path, 
+        class: "bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition" %>
+  </div>
+
+  <% if @pdf_templates.any? %>
+    <div class="grid gap-4">
+      <% @pdf_templates.each do |template| %>
+        <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition">
+          <div class="flex justify-between items-start">
+            <div class="flex-1">
+              <h3 class="text-xl font-semibold mb-2">
+                <%= link_to template.name, template, class: "text-blue-600 hover:text-blue-800" %>
+              </h3>
+              <% if template.description.present? %>
+                <p class="text-gray-600 mb-2"><%= template.description %></p>
+              <% end %>
+              <div class="flex items-center gap-4 text-sm text-gray-500">
+                <span class="<%= template.active? ? 'text-green-600' : 'text-gray-400' %>">
+                  <%= template.active? ? 'Active' : 'Inactive' %>
+                </span>
+                <span><%= template.variable_names.count %> variables</span>
+                <span><%= template.processed_pdfs.count %> PDFs generated</span>
+              </div>
+            </div>
+            <div class="flex gap-2 ml-4">
+              <%= link_to "Generate PDF", new_pdf_template_processed_pdf_path(template), 
+                  class: "text-green-600 hover:text-green-800" %>
+              <%= link_to "Edit", edit_pdf_template_path(template), 
+                  class: "text-blue-600 hover:text-blue-800" %>
+              <%= link_to "Delete", template, 
+                  data: { 
+                    turbo_method: :delete, 
+                    turbo_confirm: "Are you sure?" 
+                  }, 
+                  class: "text-red-600 hover:text-red-800" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="bg-gray-50 rounded-lg p-8 text-center">
+      <p class="text-gray-600 mb-4">No templates yet</p>
+      <%= link_to "Create your first template", new_pdf_template_path, 
+          class: "text-blue-600 hover:text-blue-800" %>
+    </div>
+  <% end %>
+</div>

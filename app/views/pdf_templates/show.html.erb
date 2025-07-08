@@ -1,0 +1,86 @@
+<div class="max-w-6xl mx-auto px-4 py-8">
+  <div class="flex justify-between items-start mb-8">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= @pdf_template.name %></h1>
+      <% if @pdf_template.description.present? %>
+        <p class="text-gray-600"><%= @pdf_template.description %></p>
+      <% end %>
+      <div class="flex items-center gap-4 mt-4 text-sm">
+        <span class="<%= @pdf_template.active? ? 'text-green-600' : 'text-gray-400' %>">
+          <%= @pdf_template.active? ? 'Active' : 'Inactive' %>
+        </span>
+        <span class="text-gray-500">
+          Created <%= @pdf_template.created_at.strftime("%B %d, %Y") %>
+        </span>
+      </div>
+    </div>
+    <div class="flex gap-2">
+      <%= link_to "Generate PDF", new_pdf_template_processed_pdf_path(@pdf_template), 
+          class: "bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700" %>
+      <%= link_to "Edit", edit_pdf_template_path(@pdf_template), 
+          class: "bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" %>
+      <%= link_to "Back", pdf_templates_path, 
+          class: "px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div>
+      <h2 class="text-xl font-semibold mb-4">Template Preview</h2>
+      <div class="bg-white border border-gray-200 rounded-lg p-6">
+        <div class="prose max-w-none">
+          <%= @pdf_template.template_content.html_safe %>
+        </div>
+      </div>
+      
+      <% if @pdf_template.variable_names.any? %>
+        <div class="mt-6">
+          <h3 class="text-lg font-semibold mb-2">Template Variables</h3>
+          <div class="bg-gray-50 rounded-lg p-4">
+            <ul class="space-y-1">
+              <% @pdf_template.variable_names.each do |variable| %>
+                <li class="font-mono text-sm text-gray-700">{{<%= variable %>}}</li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div>
+      <h2 class="text-xl font-semibold mb-4">Recent PDFs</h2>
+      <% if @processed_pdfs.any? %>
+        <div class="space-y-3">
+          <% @processed_pdfs.each do |pdf| %>
+            <div class="bg-white border border-gray-200 rounded-lg p-4">
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="font-medium text-gray-900">
+                    Generated <%= pdf.generated_at.strftime("%B %d, %Y at %l:%M %p") %>
+                  </p>
+                  <% if pdf.variables_used.any? %>
+                    <p class="text-sm text-gray-500 mt-1">
+                      <%= pdf.variables_used.count %> variables used
+                    </p>
+                  <% end %>
+                </div>
+                <div class="flex gap-2">
+                  <%= link_to "View", pdf_template_processed_pdf_path(@pdf_template, pdf), 
+                      class: "text-blue-600 hover:text-blue-800 text-sm" %>
+                  <%= link_to "Download", download_pdf_template_processed_pdf_path(@pdf_template, pdf), 
+                      class: "text-green-600 hover:text-green-800 text-sm" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="bg-gray-50 rounded-lg p-6 text-center">
+          <p class="text-gray-600 mb-3">No PDFs generated yet</p>
+          <%= link_to "Generate First PDF", new_pdf_template_processed_pdf_path(@pdf_template), 
+              class: "text-blue-600 hover:text-blue-800" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

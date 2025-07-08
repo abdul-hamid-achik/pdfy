@@ -1,0 +1,8 @@
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-900">New PDF Template</h1>
+    <%= link_to "Back", pdf_templates_path, class: "text-gray-600 hover:text-gray-800" %>
+  </div>
+
+  <%= render "form", pdf_template: @pdf_template %>
+</div>

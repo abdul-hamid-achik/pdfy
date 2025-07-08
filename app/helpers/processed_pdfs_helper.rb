@@ -1,0 +1,2 @@
+module ProcessedPdfsHelper
+end
