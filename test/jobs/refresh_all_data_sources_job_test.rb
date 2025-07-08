@@ -40,11 +40,19 @@ class RefreshAllDataSourcesJobTest < ActiveJob::TestCase
   end
 
   test "should not enqueue jobs for sources that don't need refresh" do
+    # Create fresh data points for all active sources
+    @active_data_source.data_points.create!(
+      key: "fresh_data",
+      value: { "temp" => 20 },
+      fetched_at: 5.minutes.ago,
+      expires_at: 55.minutes.from_now
+    )
+    
     # Mock needs_refresh? to return false for all sources
-    DataSource.any_instance.stub(:needs_refresh?, false) do
-      assert_no_enqueued_jobs only: FetchDataSourceJob do
-        RefreshAllDataSourcesJob.perform_now
-      end
+    DataSource.any_instance.stubs(:needs_refresh?).returns(false)
+    
+    assert_no_enqueued_jobs only: FetchDataSourceJob do
+      RefreshAllDataSourcesJob.perform_now
     end
   end
 

@@ -25,6 +25,14 @@ class PdfTemplateTest < ActiveSupport::TestCase
   end
 
   test "should fetch dynamic data from data sources" do
+    # Stub any weather API calls
+    stub_request(:get, %r{api\.openweathermap\.org})
+      .to_return(
+        status: 200,
+        body: { "main" => { "temp" => 25 } }.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+    
     # Create a mock data source
     weather_source = @user.data_sources.create!(
       name: "weather",

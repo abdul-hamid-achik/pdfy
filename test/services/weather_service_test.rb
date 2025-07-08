@@ -61,7 +61,8 @@ class WeatherServiceTest < ActiveSupport::TestCase
   end
 
   test "should handle network errors" do
-    stub_request(:get, "https://api.openweathermap.org/data/2.5/weather")
+    stub_request(:get, %r{api\.openweathermap\.org/data/2\.5/weather})
+      .with(query: hash_including(q: "London"))
       .to_timeout
 
     result = @service.fetch(city: "London")

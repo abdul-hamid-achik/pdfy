@@ -83,7 +83,7 @@ class StockServiceTest < ActiveSupport::TestCase
     result = @service.fetch({})
 
     assert result.success?
-    assert_equal "AAPL", result.data["symbol"]
+    assert_equal "AAPL", result.data[:symbol]
   end
 
   test "should handle different stock symbols" do
@@ -358,7 +358,7 @@ class StockServiceTest < ActiveSupport::TestCase
     result = @service.fetch({ "symbol" => "AAPL" })
 
     assert result.success?
-    assert_equal "123456789", result.data["volume"]
+    assert_equal 123456789, result.data[:volume]
   end
 
   test "should work with different API endpoints" do

@@ -62,7 +62,7 @@ class LocationServiceTest < ActiveSupport::TestCase
       "utc_offset" => "+1100"
     }
 
-    stub_request(:get, "https://ipapi.co/1.1.1.1/json")
+    stub_request(:get, "https://ipapi.co/1.1.1.1/")
       .with(headers: { 'User-Agent' => 'PDFy/1.0' })
       .to_return(
         status: 200,
@@ -174,7 +174,7 @@ class LocationServiceTest < ActiveSupport::TestCase
       "reason" => "Invalid IP address format"
     }
 
-    stub_request(:get, "https://ipapi.co/invalid_ip/json")
+    stub_request(:get, "https://ipapi.co/invalid_ip/")
       .to_return(
         status: 400,
         body: error_response.to_json,
@@ -198,7 +198,7 @@ class LocationServiceTest < ActiveSupport::TestCase
   end
 
   test "should handle timeout errors" do
-    stub_request(:get, "https://ipapi.co/json")
+    stub_request(:get, "https://ipapi.co/json/")
       .to_timeout
 
     result = @service.fetch({})
@@ -208,7 +208,7 @@ class LocationServiceTest < ActiveSupport::TestCase
   end
 
   test "should handle invalid JSON response" do
-    stub_request(:get, "https://ipapi.co/json")
+    stub_request(:get, "https://ipapi.co/json/")
       .to_return(
         status: 200,
         body: "Invalid JSON {",
@@ -256,6 +256,14 @@ class LocationServiceTest < ActiveSupport::TestCase
   end
 
   test "should work with custom endpoint" do
+    # First stub the default ipapi endpoint that might be called
+    stub_request(:get, "https://ipapi.co/json/")
+      .to_return(
+        status: 200,
+        body: { "ip" => "127.0.0.1", "city" => "Local" }.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+    
     @data_source.update!(api_endpoint: "https://custom-geo-api.com/locate")
     
     mock_response = {
