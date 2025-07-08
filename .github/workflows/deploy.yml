@@ -1,0 +1,62 @@
+name: Deploy to Railway
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
+  RAILWAY_ENVIRONMENT: production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Railway CLI
+      run: |
+        curl -fsSL https://railway.app/install.sh | sh
+        echo "$HOME/.railway/bin" >> $GITHUB_PATH
+
+    - name: Deploy to Railway
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      run: |
+        railway login --token $RAILWAY_TOKEN
+        railway link ${{ secrets.RAILWAY_PROJECT_ID }}
+        railway up --detach
+
+    - name: Run database migrations
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      run: |
+        railway run --service ${{ secrets.RAILWAY_SERVICE_NAME }} rails db:migrate
+
+    - name: Seed database (first deploy only)
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      run: |
+        # Check if database is empty (no users exist)
+        SEED_NEEDED=$(railway run --service ${{ secrets.RAILWAY_SERVICE_NAME }} rails runner "puts User.count == 0")
+        if [ "$SEED_NEEDED" = "true" ]; then
+          echo "Database is empty, running seeds..."
+          railway run --service ${{ secrets.RAILWAY_SERVICE_NAME }} rails db:seed
+        else
+          echo "Database already seeded, skipping..."
+        fi
+
+    - name: Restart application
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      run: |
+        railway service restart ${{ secrets.RAILWAY_SERVICE_NAME }}
+
+    - name: Health check
+      run: |
+        sleep 30
+        curl -f ${{ secrets.RAILWAY_PUBLIC_URL }}/health || exit 1

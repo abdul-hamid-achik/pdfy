@@ -1,6 +1,6 @@
 # PDFy
 
-A modern Rails PDF generation and template management application built with Rails 8, featuring user authentication, admin panel, and cloud storage integration. Create, manage, and generate PDFs from customizable templates with a clean, intuitive interface.
+A modern Rails PDF generation and template management application built with Rails 8, featuring user authentication, admin panel, cloud storage integration, and dynamic data from external APIs. Create, manage, and generate PDFs from customizable templates with real-time data including weather, stock prices, news, and location information.
 
 ## Features
 
@@ -8,8 +8,15 @@ A modern Rails PDF generation and template management application built with Rai
 - **PDF Template Management**: Create and manage reusable PDF templates with variables
 - **Rich Text Editor**: Built-in Trix editor for creating beautiful HTML templates
 - **Variable Substitution**: Define variables in templates using `{{variable_name}}` syntax
+- **Dynamic Data Integration**: 
+  - **Weather Data**: Real-time weather information from OpenWeatherMap
+  - **Stock Prices**: Live stock quotes from Alpha Vantage
+  - **News Feed**: Latest news articles from NewsAPI
+  - **Location Data**: IP-based geolocation information
+  - **Custom APIs**: Support for any REST API integration
+- **Data Caching**: Intelligent caching system to minimize API calls
 - **PDF Generation**: Generate PDFs from templates with custom data using Grover (Chrome-based)
-- **Template Library**: Pre-built templates for invoices, letters, certificates, and reports
+- **Template Library**: Pre-built templates including dynamic business reports
 - **PDF History**: Track all generated PDFs with their original HTML and variables used
 - **Admin Panel**: Comprehensive admin interface built with ActiveAdmin
 - **User Management**: Admin users can manage all users, templates, and PDFs
@@ -51,18 +58,28 @@ git clone https://github.com/abdul-hamid-achik/pdfy.git
 cd pdfy
 ```
 
-2. Build and start the containers:
+2. Run the automated setup script:
+```bash
+bin/docker-setup
+```
+
+This will:
+- Build Docker containers with all dependencies
+- Install Chrome/Chromium for PDF generation  
+- Setup PostgreSQL, Redis, and MinIO
+- Run database migrations and seed data
+- Validate the setup with automated tests
+
+The application will be available at `http://localhost:5050`.
+MinIO console will be available at `http://localhost:9001` (login: minioadmin/minioadmin).
+
+#### Manual Docker Setup
+
+If you prefer manual setup:
 ```bash
 docker-compose up --build
-```
-
-3. In another terminal, setup the database:
-```bash
 docker-compose exec web bin/rails db:create db:migrate db:seed
 ```
-
-The application will be available at `http://localhost:3001`.
-MinIO console will be available at `http://localhost:9001` (login: minioadmin/minioadmin).
 
 ### Local Development
 
@@ -102,7 +119,7 @@ bin/rails db:create db:migrate db:seed
 bin/dev
 ```
 
-The application will be available at `http://localhost:3001`.
+The application will be available at `http://localhost:5050`.
 
 ## Default Users
 
@@ -171,6 +188,36 @@ Variables in templates use double curly brace syntax:
 - `{{invoice_date}}` - Will be replaced with the invoice date
 - Any text within `{{}}` becomes a variable
 
+### Dynamic Data Variables
+
+When data sources are connected to a template, you can use dynamic variables:
+
+**Weather Data:**
+- `{{weather.temp}}` - Current temperature
+- `{{weather.condition}}` - Weather condition (Clear, Cloudy, etc.)
+- `{{weather.humidity}}` - Humidity percentage
+- `{{weather.city}}` - City name
+- `{{weather.wind_speed}}` - Wind speed
+
+**Stock Data:**
+- `{{stocks.symbol}}` - Stock symbol
+- `{{stocks.price}}` - Current price
+- `{{stocks.change_percent}}` - Percentage change
+- `{{stocks.volume}}` - Trading volume
+- `{{stocks.previous_close}}` - Previous closing price
+
+**Location Data:**
+- `{{location.city}}` - City name
+- `{{location.country}}` - Country name
+- `{{location.timezone}}` - Timezone
+- `{{location.latitude}}` - Latitude
+- `{{location.longitude}}` - Longitude
+
+**News Data:**
+- `{{news.0.title}}` - First article title
+- `{{news.0.description}}` - First article description
+- `{{news.0.url}}` - First article URL
+
 ## Environment Variables
 
 ### Required for Production
@@ -234,39 +281,42 @@ bin/rails console
 
 ### Railway Deployment
 
-1. Create a Railway project
-2. Add PostgreSQL and Redis services
-3. Deploy from GitHub:
+PDFy includes built-in Rails tasks for easy Railway deployment:
+
 ```bash
-railway login
-railway link
-railway up
+# Validate readiness for deployment
+bin/rails deploy:validate
+
+# Prepare for Railway deployment
+bin/rails deploy:railway
+
+# Setup Railway services and environment
+bin/rails railway:setup
+bin/rails railway:env
+
+# Deploy to Railway
+bin/rails railway:deploy
 ```
 
-4. Set environment variables:
-   - `RAILS_MASTER_KEY`
-   - `DATABASE_URL` (auto-provided)
-   - `REDIS_URL` (auto-provided)
-   - MinIO credentials
+### Infrastructure as Code
 
-### Docker Production
+Railway uses native configuration files for infrastructure as code:
 
-1. Build production image:
+- `railway.toml` - Deployment configuration
+- `docker-compose.yml` - Development environment
+- Rails tasks for deployment automation
+
+### Traditional Server Deployment with Kamal
+
+Rails 8 includes Kamal 2 for server deployments:
+
 ```bash
-docker build -t pdfy:latest .
+# Configure your servers in config/deploy.yml
+bin/kamal setup
+bin/kamal deploy
 ```
 
-2. Run with environment variables:
-```bash
-docker run -d \
-  -p 80:3001 \
-  -e RAILS_MASTER_KEY=xxx \
-  -e DATABASE_URL=xxx \
-  -e MINIO_ENDPOINT=xxx \
-  -e MINIO_ACCESS_KEY_ID=xxx \
-  -e MINIO_SECRET_ACCESS_KEY=xxx \
-  pdfy:latest
-```
+For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## Troubleshooting
 
@@ -308,7 +358,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## Author
 
-Abdul-Hamid Achik
+abdul hamid
 
 ## Acknowledgments
 

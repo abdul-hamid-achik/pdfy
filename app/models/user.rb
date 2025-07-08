@@ -6,6 +6,7 @@ class User < ApplicationRecord
   
   has_many :pdf_templates, dependent: :destroy
   has_many :processed_pdfs, through: :pdf_templates
+  has_many :data_sources, dependent: :destroy
   
   def admin?
     admin

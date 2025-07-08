@@ -1,0 +1,21 @@
+# Railway deployment configuration for PDFy
+# Documentation: https://docs.railway.com/reference/config-as-code
+
+[build]
+builder = "DOCKERFILE"
+
+[deploy]
+startCommand = "bin/rails server -b 0.0.0.0 -p $PORT"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+# Environment-specific configurations
+[environments.production]
+[environments.production.deploy]
+startCommand = "bundle exec rails db:migrate && bundle exec rails db:conditional_seed && bin/rails server -b 0.0.0.0 -p $PORT"
+
+[environments.staging]
+[environments.staging.deploy]
+startCommand = "bundle exec rails db:migrate && bundle exec rails db:conditional_seed && bin/rails server -b 0.0.0.0 -p $PORT"

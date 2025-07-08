@@ -70,6 +70,23 @@ gem "sidekiq"
 gem "better_errors"
 gem "binding_of_caller"
 
+# HTTP client for API calls
+gem "httparty"
+gem "faraday"
+
+# Caching
+gem "redis"
+
+# Testing
+group :test do
+  gem "minitest-rails"
+  gem "capybara"
+  gem "selenium-webdriver"
+  gem "webmock"
+  gem "vcr"
+  gem "mocha"
+end
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

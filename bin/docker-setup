@@ -1,0 +1,64 @@
+#!/bin/bash
+set -e
+
+echo "🚀 Setting up PDFy with Docker..."
+
+# Check if Docker is running
+if ! docker info > /dev/null 2>&1; then
+  echo "❌ Docker is not running. Please start Docker and try again."
+  exit 1
+fi
+
+echo "✓ Docker is running"
+
+# Build the containers
+echo "📦 Building Docker containers..."
+docker-compose build
+
+# Start the services
+echo "🏃 Starting services..."
+docker-compose up -d db redis minio
+
+# Wait for services to be ready
+echo "⏳ Waiting for services to be ready..."
+sleep 10
+
+# Create MinIO bucket
+echo "🪣 Creating MinIO bucket..."
+docker-compose exec -T minio mc alias set local http://localhost:9000 minioadmin minioadmin || true
+docker-compose exec -T minio mc mb local/pdfy-development --ignore-existing || true
+
+# Setup the database
+echo "🗄️ Setting up database..."
+docker-compose run --rm web bin/rails db:create db:migrate db:seed
+
+# Start the web service
+echo "🌐 Starting web service..."
+docker-compose up -d web css js
+
+# Run the validation test
+echo "🧪 Running validation tests..."
+docker-compose exec web ruby test/docker_test.rb
+
+echo "
+✅ PDFy is ready!
+
+🔗 Access the application at: http://localhost:3001
+👤 Default users:
+   - Admin: admin@example.com / password
+   - User: user@example.com / password
+   
+📊 MinIO Console: http://localhost:9001
+   - Username: minioadmin
+   - Password: minioadmin
+
+📝 To get API keys for dynamic data:
+   - Weather: https://openweathermap.org/api
+   - Stocks: https://www.alphavantage.co/support/#api-key
+   - News: https://newsapi.org/register
+
+💡 Tips:
+   - View logs: docker-compose logs -f
+   - Stop services: docker-compose down
+   - Reset everything: docker-compose down -v
+"

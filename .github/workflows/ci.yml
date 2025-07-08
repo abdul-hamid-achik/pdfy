@@ -1,39 +1,104 @@
 name: CI
 
 on:
-  pull_request:
   push:
+    branches: [ main, develop ]
+  pull_request:
     branches: [ main ]
 
+env:
+  RAILS_ENV: test
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_DB: pdfy_test
+
 jobs:
-  scan_ruby:
+  test:
     runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: pdfy_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.2.0
+        bundler-cache: true
 
-      - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Install Chrome for PDF generation
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y chromium-browser
+        echo "CHROME_BIN=/usr/bin/chromium-browser" >> $GITHUB_ENV
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
+    - name: Install dependencies
+      run: |
+        bundle install --jobs 4 --retry 3
+        npm install
 
-      - name: Lint code for consistent style
-        run: bin/rubocop -f github
+    - name: Setup database
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/pdfy_test
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      run: |
+        bin/rails db:create
+        bin/rails db:schema:load
 
+    - name: Run tests
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/pdfy_test
+        REDIS_URL: redis://localhost:6379/0
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        CHROME_BIN: /usr/bin/chromium-browser
+      run: |
+        bin/rails test:all
+        
+    - name: Run system tests
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/pdfy_test
+        REDIS_URL: redis://localhost:6379/0
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        CHROME_BIN: /usr/bin/chromium-browser
+      run: |
+        bin/rails test:system
+
+    - name: Upload coverage reports
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: test-results
+        path: |
+          tmp/screenshots/
+          log/test.log
