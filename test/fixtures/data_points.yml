@@ -1,0 +1,31 @@
+weather_temp:
+  key: "temperature"
+  value: '{"temp": 25, "condition": "sunny", "humidity": 60, "wind_speed": 10}'
+  fetched_at: <%= 1.hour.ago %>
+  expires_at: <%= 1.hour.from_now %>
+  metadata: '{"location": "Toronto", "country": "CA"}'
+  data_source: weather
+
+stock_price:
+  key: "price"
+  value: '{"symbol": "AAPL", "price": 150.25, "change": 2.5, "volume": 1000000}'
+  fetched_at: <%= 30.minutes.ago %>
+  expires_at: <%= 30.minutes.from_now %>
+  metadata: '{"market": "NASDAQ"}'
+  data_source: stock
+
+news_headlines:
+  key: "headlines"
+  value: '[{"title": "Market Update", "summary": "Stocks rise today", "url": "https://example.com/1", "published_at": "2024-01-01T12:00:00Z"}]'
+  fetched_at: <%= 2.hours.ago %>
+  expires_at: <%= 2.hours.from_now %>
+  metadata: '{"category": "business"}'
+  data_source: news
+
+expired_data:
+  key: "expired"
+  value: '{"old": "data"}'
+  fetched_at: <%= 5.hours.ago %>
+  expires_at: <%= 1.hour.ago %>
+  metadata: '{}'
+  data_source: weather

@@ -1,0 +1,21 @@
+monthly_report:
+  pdf_template: one
+  original_html: |
+    <h1>Monthly Report</h1>
+    <p>Date: 2024-01-15</p>
+    <p>Weather: 25°C</p>
+    <p>Stock Price: $150.25</p>
+  generated_at: <%= 1.day.ago %>
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+invoice_pdf:
+  pdf_template: two
+  original_html: |
+    <h1>Invoice</h1>
+    <p>Customer: John Doe</p>
+    <p>Amount: $500.00</p>
+    <p>Date: 2024-01-15</p>
+  generated_at: <%= 2.days.ago %>
+  created_at: <%= 2.days.ago %>
+  updated_at: <%= 2.days.ago %>

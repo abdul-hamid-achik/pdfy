@@ -1,0 +1,27 @@
+template_one_weather:
+  pdf_template: one
+  data_source: weather
+  enabled: true
+  created_at: <%= 30.days.ago %>
+  updated_at: <%= 30.days.ago %>
+
+template_one_stock:
+  pdf_template: one
+  data_source: stock
+  enabled: true
+  created_at: <%= 25.days.ago %>
+  updated_at: <%= 25.days.ago %>
+
+template_two_news:
+  pdf_template: two
+  data_source: news
+  enabled: true
+  created_at: <%= 10.days.ago %>
+  updated_at: <%= 10.days.ago %>
+
+disabled_connection:
+  pdf_template: inactive
+  data_source: inactive
+  enabled: false
+  created_at: <%= 5.days.ago %>
+  updated_at: <%= 5.days.ago %>
