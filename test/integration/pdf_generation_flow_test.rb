@@ -20,7 +20,7 @@ class PdfGenerationFlowTest < ActionDispatch::IntegrationTest
       pdf_template: {
         name: "Integration Test Invoice",
         description: "Invoice template for integration testing",
-        template_content: <<~HTML
+        template_content: <<~'HTML',
           <div class="invoice">
             <h1>Invoice #{{invoice_number}}</h1>
             <div class="header">
@@ -142,7 +142,7 @@ class PdfGenerationFlowTest < ActionDispatch::IntegrationTest
       pdf_template: {
         name: "User Template",
         description: "Template created by regular user",
-        template_content: "<h1>{{title}}</h1>",
+        template_content: '<h1>{{title}}</h1>',
         active: true
       }
     }
@@ -180,7 +180,7 @@ class PdfGenerationFlowTest < ActionDispatch::IntegrationTest
       pdf_template: {
         name: "Private Template",
         description: "Should not be accessible to other users",
-        template_content: "<h1>{{secret}}</h1>",
+        template_content: '<h1>{{secret}}</h1>',
         active: true
       }
     }
@@ -209,7 +209,7 @@ class PdfGenerationFlowTest < ActionDispatch::IntegrationTest
     template = PdfTemplate.create!(
       name: "Incomplete Variables Test",
       description: "Test template with missing variables",
-      template_content: <<~HTML
+      template_content: <<~'HTML',
         <div>
           <h1>{{title}}</h1>
           <p>Required field: {{required_field}}</p>
@@ -248,7 +248,7 @@ class PdfGenerationFlowTest < ActionDispatch::IntegrationTest
     template = PdfTemplate.create!(
       name: "Error Test Template",
       description: "Template for testing error handling",
-      template_content: "<h1>{{title}}</h1>",
+      template_content: '<h1>{{title}}</h1>',
       user: @user,
       active: true
     )
@@ -275,7 +275,7 @@ class PdfGenerationFlowTest < ActionDispatch::IntegrationTest
     template = PdfTemplate.create!(
       name: "Complex HTML Template",
       description: "Template with complex HTML structure and CSS classes",
-      template_content: <<~HTML
+      template_content: <<~'HTML',
         <div class="container mx-auto p-8">
           <header class="text-center mb-8">
             <h1 class="text-4xl font-bold text-blue-600">{{company_name}}</h1>
@@ -390,7 +390,7 @@ class PdfGenerationFlowTest < ActionDispatch::IntegrationTest
       PdfTemplate.create!(
         name: "Template #{i.to_s.rjust(2, '0')}",
         description: "Description for template #{i}",
-        template_content: "<h1>Template {{number}}</h1>",
+        template_content: '<h1>Template {{number}}</h1>',
         user: @user,
         active: i.even?,  # Make some active, some inactive
         created_at: i.hours.ago
@@ -442,7 +442,7 @@ class PdfGenerationFlowTest < ActionDispatch::IntegrationTest
     template = PdfTemplate.create!(
       name: "Weather Report Template",
       description: "Template that includes weather information",
-      template_content: <<~HTML
+      template_content: <<~'HTML',
         <div class="weather-report">
           <h1>Weather Report for {{location}}</h1>
           <div class="current-conditions">

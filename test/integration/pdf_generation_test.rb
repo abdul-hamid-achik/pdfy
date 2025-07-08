@@ -5,7 +5,7 @@ class PdfGenerationTest < ActionDispatch::IntegrationTest
     @user = User.create!(email: "test@example.com", password: "password")
     @template = @user.pdf_templates.create!(
       name: "Test Invoice",
-      template_content: <<~HTML
+      template_content: <<~'HTML',
         <h1>Invoice #{{invoice_number}}</h1>
         <p>Customer: {{customer_name}}</p>
         <p>Total: ${{total}}</p>

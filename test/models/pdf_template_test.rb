@@ -5,7 +5,7 @@ class PdfTemplateTest < ActiveSupport::TestCase
     @user = User.create!(email: "test@example.com", password: "password")
     @template = PdfTemplate.create!(
       name: "Test Template",
-      template_content: "Hello {{name}}, the weather is {{weather.temp}}°C",
+      template_content: 'Hello {{name}}, the weather is {{weather.temp}}°C',
       user: @user
     )
   end
@@ -21,7 +21,7 @@ class PdfTemplateTest < ActiveSupport::TestCase
 
   test "should handle missing variables" do
     result = @template.render_with_variables({})
-    assert_includes result, "{{name}}"
+    assert_includes result, '{{name}}'
   end
 
   test "should fetch dynamic data from data sources" do

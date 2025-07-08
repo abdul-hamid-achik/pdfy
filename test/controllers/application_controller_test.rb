@@ -182,7 +182,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
       pdf_template: {
         name: "Auth Test Template",
         description: "Testing authentication",
-        template_content: "<h1>{{test}}</h1>",
+        template_content: '<h1>{{test}}</h1>',
         active: true
       }
     }

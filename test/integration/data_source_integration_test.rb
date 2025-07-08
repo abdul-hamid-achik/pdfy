@@ -413,7 +413,7 @@ class DataSourceIntegrationTest < ActionDispatch::IntegrationTest
     location_template = PdfTemplate.create!(
       name: "Location Report",
       description: "Report with location data",
-      template_content: <<~HTML
+      template_content: <<~'HTML',
         <div class="location-report">
           <h1>Location Report</h1>
           <div class="location-details">

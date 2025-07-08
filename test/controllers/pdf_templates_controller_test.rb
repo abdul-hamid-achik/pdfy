@@ -9,14 +9,14 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
     @pdf_template = PdfTemplate.create!(
       name: "Test Template",
       description: "A test template",
-      template_content: "<h1>Hello {{name}}</h1>",
+      template_content: '<h1>Hello {{name}}</h1>',
       user: @user,
       active: true
     )
     @other_user_template = PdfTemplate.create!(
       name: "Other User Template",
       description: "Template from another user",
-      template_content: "<p>{{content}}</p>",
+      template_content: '<p>{{content}}</p>',
       user: users(:two),
       active: true
     )
@@ -65,7 +65,7 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
         pdf_template: {
           name: "New Template",
           description: "A new template",
-          template_content: "<h1>{{title}}</h1>",
+          template_content: '<h1>{{title}}</h1>',
           active: true
         }
       }
@@ -83,7 +83,7 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
         pdf_template: {
           name: "",  # Invalid - name is required
           description: "A template without name",
-          template_content: "<h1>{{title}}</h1>"
+          template_content: "<h1>\{\{title\}\}</h1>"
         }
       }
     end
@@ -135,7 +135,7 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
       pdf_template: {
         name: "Updated Template",
         description: "Updated description",
-        template_content: "<h2>{{updated_content}}</h2>",
+        template_content: '<h2>{{updated_content}}</h2>',
         active: false
       }
     }
@@ -146,7 +146,7 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
     @pdf_template.reload
     assert_equal "Updated Template", @pdf_template.name
     assert_equal "Updated description", @pdf_template.description
-    assert_equal "<h2>{{updated_content}}</h2>", @pdf_template.template_content
+    assert_equal '<h2>{{updated_content}}</h2>', @pdf_template.template_content
     assert_not @pdf_template.active
   end
 
@@ -276,7 +276,7 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
     template_with_vars = PdfTemplate.create!(
       name: "Variable Template",
       description: "Template with multiple variables",
-      template_content: "<h1>{{title}}</h1><p>Hello {{name}}, your email is {{email}}</p>",
+      template_content: '<h1>{{title}}</h1><p>Hello {{name}}, your email is {{email}}</p>',
       user: @user,
       active: true
     )
@@ -298,7 +298,7 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
     old_template = PdfTemplate.create!(
       name: "Old Template",
       description: "An old template",
-      template_content: "<h1>Old</h1>",
+      template_content: '<h1>Old</h1>',
       user: @user,
       active: true,
       created_at: 2.days.ago
@@ -307,7 +307,7 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
     new_template = PdfTemplate.create!(
       name: "New Template",
       description: "A new template",
-      template_content: "<h1>New</h1>",
+      template_content: '<h1>New</h1>',
       user: @user,
       active: true,
       created_at: 1.hour.ago
@@ -328,7 +328,7 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
     inactive_template = PdfTemplate.create!(
       name: "Inactive Template",
       description: "An inactive template",
-      template_content: "<h1>Inactive</h1>",
+      template_content: '<h1>Inactive</h1>',
       user: @user,
       active: false
     )
@@ -349,7 +349,7 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
       pdf_template: {
         name: "Invalid Template",
         description: "Template with unmatched braces",
-        template_content: "<h1>{{title}</h1><p>{{incomplete_var</p>",
+        template_content: '<h1>{{title}</h1><p>{{incomplete_var</p>',
         active: true
       }
     }
@@ -359,7 +359,7 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should handle templates with complex HTML" do
-    complex_html = <<~HTML
+    complex_html = <<~'HTML'
       <div class="container">
         <header>
           <h1>{{company_name}}</h1>

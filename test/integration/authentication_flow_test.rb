@@ -93,7 +93,7 @@ class AuthenticationFlowTest < ActionDispatch::IntegrationTest
       pdf_template: {
         name: "Session Test Template",
         description: "Testing session persistence",
-        template_content: "<h1>{{title}}</h1>",
+        template_content: '<h1>{{title}}</h1>',
         active: true
       }
     }
@@ -350,7 +350,7 @@ class AuthenticationFlowTest < ActionDispatch::IntegrationTest
       pdf_template: {
         name: "Private Template",
         description: "Should not be accessible",
-        template_content: "<h1>{{secret}}</h1>",
+        template_content: '<h1>{{secret}}</h1>',
         active: true
       }
     }

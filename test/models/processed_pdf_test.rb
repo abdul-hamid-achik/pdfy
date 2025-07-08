@@ -6,7 +6,7 @@ class ProcessedPdfTest < ActiveSupport::TestCase
     @pdf_template = PdfTemplate.create!(
       name: "Test Template",
       description: "A test template",
-      template_content: "<h1>Hello {{name}}</h1><p>Welcome to {{city}}</p>",
+      template_content: '<h1>Hello {{name}}</h1><p>Welcome to {{city}}</p>',
       user: @user,
       active: true
     )

@@ -8,9 +8,9 @@ class ProcessedPdfsControllerTest < ActionDispatch::IntegrationTest
     @pdf_template = PdfTemplate.create!(
       name: "Invoice Template",
       description: "A professional invoice template",
-      template_content: <<~HTML
+      template_content: <<~'HTML',
         <div class="invoice">
-          <h1>Invoice #{{invoice_number}}</h1>
+          <h1>{{invoice_number}}</h1>
           <p>Bill to: {{customer_name}}</p>
           <p>Amount: ${{amount}}</p>
           <p>Due: {{due_date}}</p>
@@ -227,7 +227,7 @@ class ProcessedPdfsControllerTest < ActionDispatch::IntegrationTest
     other_template = PdfTemplate.create!(
       name: "Other Template",
       description: "Template from another user",
-      template_content: "<h1>{{title}}</h1>",
+      template_content: '<h1>{{title}}</h1>',
       user: other_user,
       active: true
     )
@@ -248,7 +248,7 @@ class ProcessedPdfsControllerTest < ActionDispatch::IntegrationTest
     complex_template = PdfTemplate.create!(
       name: "Complex Template",
       description: "Template with many variables",
-      template_content: <<~HTML
+      template_content: <<~'HTML',
         <div>
           <h1>{{title}}</h1>
           <div class="content">
