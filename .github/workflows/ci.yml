@@ -55,18 +55,20 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'npm'
+        cache: 'yarn'
 
     - name: Install Chrome for PDF generation
       run: |
         sudo apt-get update
         sudo apt-get install -y chromium-browser
         echo "CHROME_BIN=/usr/bin/chromium-browser" >> $GITHUB_ENV
+        echo "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true" >> $GITHUB_ENV
+        echo "PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser" >> $GITHUB_ENV
 
     - name: Install dependencies
       run: |
         bundle install --jobs 4 --retry 3
-        npm install
+        yarn install
 
     - name: Setup database
       env:
@@ -82,6 +84,7 @@ jobs:
         REDIS_URL: redis://localhost:6379/0
         RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         CHROME_BIN: /usr/bin/chromium-browser
+        PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
       run: |
         bin/rails test:all
         
@@ -91,6 +94,7 @@ jobs:
         REDIS_URL: redis://localhost:6379/0
         RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         CHROME_BIN: /usr/bin/chromium-browser
+        PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
       run: |
         bin/rails test:system
 
