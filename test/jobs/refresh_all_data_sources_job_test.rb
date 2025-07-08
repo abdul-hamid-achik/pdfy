@@ -29,13 +29,11 @@ class RefreshAllDataSourcesJobTest < ActiveJob::TestCase
   end
 
   test "should only process active data sources" do
-    processed_sources = []
+    # Mock needs_refresh? to return true for all sources
+    DataSource.any_instance.stubs(:needs_refresh?).returns(true)
     
-    # Mock needs_refresh? and capture which sources are processed
-    DataSource.any_instance.stub(:needs_refresh?, true) do
-      assert_enqueued_jobs 1, only: FetchDataSourceJob do
-        RefreshAllDataSourcesJob.perform_now
-      end
+    assert_enqueued_jobs 1, only: FetchDataSourceJob do
+      RefreshAllDataSourcesJob.perform_now
     end
   end
 
@@ -101,6 +99,7 @@ class RefreshAllDataSourcesJobTest < ActiveJob::TestCase
     end
     
     # Should enqueue jobs for all active sources plus the original one
+    # Original has no data points, so it needs refresh too
     assert_enqueued_jobs 4, only: FetchDataSourceJob do
       RefreshAllDataSourcesJob.perform_now
     end
@@ -168,10 +167,10 @@ class RefreshAllDataSourcesJobTest < ActiveJob::TestCase
 
   test "should handle errors gracefully" do
     # Mock DataSource.active to raise an error
-    DataSource.stub(:active, -> { raise StandardError, "Database error" }) do
-      assert_raises StandardError do
-        RefreshAllDataSourcesJob.perform_now
-      end
+    DataSource.stubs(:active).raises(StandardError, "Database error")
+    
+    assert_raises StandardError do
+      RefreshAllDataSourcesJob.perform_now
     end
   end
 
@@ -182,17 +181,18 @@ class RefreshAllDataSourcesJobTest < ActiveJob::TestCase
         name: "bulk_source_#{i}",
         source_type: "weather",
         api_endpoint: "https://api.example.com/#{i}",
+        api_key: "test_key",
         user: @user,
         active: true
       )
     end
     
     # Mock all sources to need refresh
-    DataSource.any_instance.stub(:needs_refresh?, true) do
-      # Should enqueue jobs for all active sources (20 + 1 original)
-      assert_enqueued_jobs 21, only: FetchDataSourceJob do
-        RefreshAllDataSourcesJob.perform_now
-      end
+    DataSource.any_instance.stubs(:needs_refresh?).returns(true)
+    
+    # Should enqueue jobs for all active sources (20 + 1 original)
+    assert_enqueued_jobs 21, only: FetchDataSourceJob do
+      RefreshAllDataSourcesJob.perform_now
     end
   end
 
@@ -202,19 +202,13 @@ class RefreshAllDataSourcesJobTest < ActiveJob::TestCase
     
     find_each_called = false
     
-    # Mock the active scope to track if find_each is called
-    active_relation = DataSource.active
-    active_relation.define_singleton_method(:find_each) do |&block|
-      find_each_called = true
-      # Call the original find_each
-      super(&block)
-    end
+    # Create a custom expectation for find_each
+    mock_scope = DataSource.active
+    mock_scope.expects(:find_each).yields(@active_data_source)
     
-    DataSource.stub(:active, active_relation) do
-      RefreshAllDataSourcesJob.perform_now
-    end
+    DataSource.stubs(:active).returns(mock_scope)
     
-    assert find_each_called, "find_each should be used for memory efficiency"
+    RefreshAllDataSourcesJob.perform_now
   end
 
   test "should preserve job configuration" do

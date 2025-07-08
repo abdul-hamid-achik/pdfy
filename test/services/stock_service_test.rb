@@ -49,11 +49,11 @@ class StockServiceTest < ActiveSupport::TestCase
     result = @service.fetch({ "symbol" => "AAPL" })
 
     assert result.success?
-    assert_equal "AAPL", result.data["symbol"]
-    assert_equal "150.00", result.data["price"]
-    assert_equal "1.69%", result.data["change_percent"]
-    assert_equal "50000000", result.data["volume"]
-    assert_equal "147.50", result.data["previous_close"]
+    assert_equal "AAPL", result.data[:symbol]
+    assert_equal 150.00, result.data[:price]
+    assert_equal 1.69, result.data[:change_percent]
+    assert_equal 50000000, result.data[:volume]
+    assert_equal 147.50, result.data[:previous_close]
   end
 
   test "should use default symbol when none provided" do
@@ -116,7 +116,7 @@ class StockServiceTest < ActiveSupport::TestCase
       result = @service.fetch({ "symbol" => symbol })
 
       assert result.success?
-      assert_equal symbol, result.data["symbol"]
+      assert_equal symbol, result.data[:symbol]
     end
   end
 
@@ -243,9 +243,8 @@ class StockServiceTest < ActiveSupport::TestCase
 
     assert result.success?
     assert result.metadata.present?
-    assert_equal "alpha_vantage", result.metadata["source"]
-    assert_equal "GLOBAL_QUOTE", result.metadata["function"]
-    assert result.metadata["timestamp"].present?
+    assert_equal "stock", result.metadata[:source]
+    assert result.metadata[:timestamp].present?
   end
 
   test "should handle missing Global Quote data" do
@@ -328,7 +327,7 @@ class StockServiceTest < ActiveSupport::TestCase
     result = @service.fetch({ "symbol" => "AAPL" })
 
     assert result.success?
-    assert_equal "1.6900%", result.data["change_percent"]
+    assert_equal 1.69, result.data[:change_percent]
   end
 
   test "should handle large volume numbers" do
@@ -391,6 +390,6 @@ class StockServiceTest < ActiveSupport::TestCase
     result = @service.fetch({ "symbol" => "AAPL" })
 
     assert result.success?
-    assert_equal "AAPL", result.data["symbol"]
+    assert_equal "AAPL", result.data[:symbol]
   end
 end

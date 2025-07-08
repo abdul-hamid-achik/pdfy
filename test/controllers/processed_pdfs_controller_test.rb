@@ -5,20 +5,7 @@ class ProcessedPdfsControllerTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = users(:one)
-    @pdf_template = PdfTemplate.create!(
-      name: "Invoice Template",
-      description: "A professional invoice template",
-      template_content: <<~'HTML',
-        <div class="invoice">
-          <h1>{{invoice_number}}</h1>
-          <p>Bill to: {{customer_name}}</p>
-          <p>Amount: ${{amount}}</p>
-          <p>Due: {{due_date}}</p>
-        </div>
-      HTML
-      user: @user,
-      active: true
-    )
+    @pdf_template = pdf_templates(:one)
     @processed_pdf = @pdf_template.processed_pdfs.create!(
       filename: "invoice_001.pdf",
       original_html: "<div><h1>Invoice #001</h1><p>Bill to: John Doe</p></div>",

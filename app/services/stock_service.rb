@@ -30,12 +30,12 @@ class StockService < BaseApiService
     elsif data['Note']
       { error: 'API rate limit reached', note: data['Note'] }
     else
-      {}
+      { error: 'No Global Quote data found' }
     end
   end
   
   def response_successful?
-    response && response.code == 200 && !response.parsed_response['Error Message']
+    response && response.code == 200 && !response.parsed_response['Error Message'] && !response.parsed_response['Note'] && response.parsed_response['Global Quote']
   end
   
   def error_message

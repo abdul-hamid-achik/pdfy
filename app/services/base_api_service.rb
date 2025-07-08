@@ -56,7 +56,8 @@ class BaseApiService
     {
       status_code: response&.code,
       fetched_at: Time.current,
-      source: self.class.name
+      source: self.class.name.underscore.gsub('_service', ''),
+      timestamp: Time.current.iso8601
     }
   end
   
