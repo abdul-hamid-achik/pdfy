@@ -17,9 +17,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Link to Railway project
+      run: |
+        railway link --project ${{ secrets.RAILWAY_PROJECT_ID }} --environment production --service ${{ secrets.RAILWAY_SERVICE_NAME }}
+
     - name: Deploy to Railway
       run: |
-        railway up --service=${{ secrets.RAILWAY_SERVICE_NAME }} --detach --project ${{ secrets.RAILWAY_PROJECT_ID }} --environment production
+        railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }} --environment production --detach
 
     - name: Health check
       run: |
