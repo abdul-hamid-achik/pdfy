@@ -177,7 +177,7 @@ class LocationServiceTest < ActiveSupport::TestCase
         headers: { 'Content-Type' => 'text/plain' }
       )
 
-    result = @service.fetch({ "ip" => "invalid_ip" })
+    result = @service.fetch({ ip: "invalid_ip" })
 
     assert_not result.success?
     assert_includes result.error, "404"

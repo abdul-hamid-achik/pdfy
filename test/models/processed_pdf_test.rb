@@ -230,16 +230,26 @@ class ProcessedPdfTest < ActiveSupport::TestCase
     # Create an older processed PDF
     older_pdf = ProcessedPdf.create!(
       pdf_template: @pdf_template,
-      original_html: "<h1>Old Document</h1>",
-      created_at: 2.hours.ago
+      original_html: "<h1>Old Document</h1>"
     )
+    older_pdf.pdf_file.attach(
+      io: StringIO.new("Old PDF content"),
+      filename: "old.pdf",
+      content_type: "application/pdf"
+    )
+    older_pdf.update!(created_at: 2.hours.ago)
     
     # Create a newer processed PDF
     newer_pdf = ProcessedPdf.create!(
       pdf_template: @pdf_template,
-      original_html: "<h1>New Document</h1>",
-      created_at: 1.minute.ago
+      original_html: "<h1>New Document</h1>"
     )
+    newer_pdf.pdf_file.attach(
+      io: StringIO.new("New PDF content"),
+      filename: "new.pdf",
+      content_type: "application/pdf"
+    )
+    newer_pdf.update!(created_at: 1.minute.ago)
     
     pdfs = @pdf_template.processed_pdfs.order(created_at: :desc)
     assert_equal newer_pdf, pdfs.first

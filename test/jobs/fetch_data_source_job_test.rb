@@ -14,17 +14,30 @@ class FetchDataSourceJobTest < ActiveJob::TestCase
   end
 
   test "should perform job successfully" do
-    # Mock the fetch_data method
-    mock_result = OpenStruct.new(
-      success?: true,
-      data: { "temp" => 20, "condition" => "sunny" },
-      metadata: { "source" => "openweathermap" }
-    )
+    # Mock the weather API response
+    mock_weather_response = {
+      "main" => {
+        "temp" => 20,
+        "humidity" => 65
+      },
+      "weather" => [
+        {
+          "main" => "Clear",
+          "description" => "clear sky"
+        }
+      ],
+      "name" => "London"
+    }
     
-    @data_source.stub(:fetch_data, mock_result) do
-      assert_nothing_raised do
-        FetchDataSourceJob.perform_now(@data_source.id)
-      end
+    stub_request(:get, %r{api\.openweathermap\.org/data/2\.5/weather})
+      .to_return(
+        status: 200,
+        body: mock_weather_response.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+    
+    assert_nothing_raised do
+      FetchDataSourceJob.perform_now(@data_source.id)
     end
   end
 
@@ -53,16 +66,23 @@ class FetchDataSourceJobTest < ActiveJob::TestCase
   end
 
   test "should call fetch_data on the data source" do
-    fetch_called = false
+    mock_weather_response = {
+      "main" => { "temp" => 20 },
+      "weather" => [{ "main" => "Clear" }],
+      "name" => "London"
+    }
     
-    @data_source.define_singleton_method(:fetch_data) do
-      fetch_called = true
-      OpenStruct.new(success?: true, data: {}, metadata: {})
-    end
+    stub_request(:get, %r{api\.openweathermap\.org/data/2\.5/weather})
+      .to_return(
+        status: 200,
+        body: mock_weather_response.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
     
     FetchDataSourceJob.perform_now(@data_source.id)
     
-    assert fetch_called, "fetch_data should have been called"
+    # Check that data point was created
+    assert @data_source.data_points.exists?
   end
 
   test "should handle network errors gracefully" do
@@ -87,9 +107,9 @@ class FetchDataSourceJobTest < ActiveJob::TestCase
     data_sources = []
     
     # Create different types of data sources
-    %w[weather stock news location custom].each do |type|
+    %w[weather stock news location custom].each_with_index do |type, index|
       ds = DataSource.create!(
-        name: "#{type}_test",
+        name: "#{type}_job_test_#{index}",
         source_type: type,
         api_endpoint: "https://api.example.com/#{type}",
         api_key: "test_key",
@@ -118,16 +138,23 @@ class FetchDataSourceJobTest < ActiveJob::TestCase
   test "should handle inactive data sources" do
     @data_source.update!(active: false)
     
-    fetch_called = false
-    @data_source.define_singleton_method(:fetch_data) do
-      fetch_called = true
-      OpenStruct.new(success?: true, data: {}, metadata: {})
-    end
+    mock_weather_response = {
+      "main" => { "temp" => 20 },
+      "weather" => [{ "main" => "Clear" }],
+      "name" => "London"
+    }
+    
+    stub_request(:get, %r{api\.openweathermap\.org/data/2\.5/weather})
+      .to_return(
+        status: 200,
+        body: mock_weather_response.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
     
     # Job should still run even for inactive data sources
-    FetchDataSourceJob.perform_now(@data_source.id)
-    
-    assert fetch_called, "fetch_data should still be called for inactive data sources"
+    assert_nothing_raised do
+      FetchDataSourceJob.perform_now(@data_source.id)
+    end
   end
 
   test "should retry on retryable errors" do

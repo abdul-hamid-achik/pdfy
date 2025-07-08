@@ -6,20 +6,8 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:one)
     @admin_user = admin_users(:one)
-    @pdf_template = PdfTemplate.create!(
-      name: "Test Template",
-      description: "A test template",
-      template_content: '<h1>Hello {{name}}</h1>',
-      user: @user,
-      active: true
-    )
-    @other_user_template = PdfTemplate.create!(
-      name: "Other User Template",
-      description: "Template from another user",
-      template_content: '<p>{{content}}</p>',
-      user: users(:two),
-      active: true
-    )
+    @pdf_template = pdf_templates(:one)
+    @other_user_template = pdf_templates(:two)
   end
 
   test "should redirect to login when not authenticated" do
@@ -38,8 +26,8 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
     sign_in @user
     get pdf_templates_url
     assert_response :success
-    assert_select "body", text: /Test Template/
-    assert_select "body", { text: /Other User Template/, count: 0 }
+    assert_select "body", text: /Monthly Report/
+    assert_select "body", { text: /Invoice Template/, count: 0 }
   end
 
   test "should show all templates for admin users" do
@@ -47,8 +35,8 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
     get pdf_templates_url
     assert_response :success
     # Admin should see all templates
-    assert_select "body", text: /Test Template/
-    assert_select "body", text: /Other User Template/
+    assert_select "body", text: /Monthly Report/
+    assert_select "body", text: /Invoice Template/
   end
 
   test "should get new" do
@@ -232,11 +220,14 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
     
     # Create some processed PDFs
     5.times do |i|
-      @pdf_template.processed_pdfs.create!(
-        filename: "test_#{i}.pdf",
+      pdf = @pdf_template.processed_pdfs.create!(
         original_html: "<h1>Test #{i}</h1>",
-        variables_used: { "name" => "Test #{i}" },
-        created_at: i.hours.ago
+        variables_used: { "name" => "Test #{i}" }
+      )
+      pdf.pdf_file.attach(
+        io: StringIO.new("Dummy PDF content #{i}"),
+        filename: "test_#{i}.pdf",
+        content_type: "application/pdf"
       )
     end
 
@@ -251,11 +242,14 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
     
     # Create 15 processed PDFs
     15.times do |i|
-      @pdf_template.processed_pdfs.create!(
-        filename: "test_#{i}.pdf",
+      pdf = @pdf_template.processed_pdfs.create!(
         original_html: "<h1>Test #{i}</h1>",
-        variables_used: { "name" => "Test #{i}" },
-        created_at: i.hours.ago
+        variables_used: { "name" => "Test #{i}" }
+      )
+      pdf.pdf_file.attach(
+        io: StringIO.new("Dummy PDF content #{i}"),
+        filename: "test_#{i}.pdf",
+        content_type: "application/pdf"
       )
     end
 
@@ -325,13 +319,7 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should handle inactive templates" do
-    inactive_template = PdfTemplate.create!(
-      name: "Inactive Template",
-      description: "An inactive template",
-      template_content: '<h1>Inactive</h1>',
-      user: @user,
-      active: false
-    )
+    inactive_template = pdf_templates(:inactive)
 
     sign_in @user
     get pdf_templates_url
