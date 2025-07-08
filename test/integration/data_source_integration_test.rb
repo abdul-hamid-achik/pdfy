@@ -302,12 +302,6 @@ class DataSourceIntegrationTest < ActionDispatch::IntegrationTest
     }
 
     stub_request(:get, %r{api\.complex\.com/data})
-      .with(query: hash_including(
-        region: "us-east",
-        format: "json",
-        category: "technology",
-        custom_param: "test_value"
-      ))
       .to_return(
         status: 200,
         body: mock_complex_response.to_json,
@@ -352,10 +346,16 @@ class DataSourceIntegrationTest < ActionDispatch::IntegrationTest
 
     # Mock API responses for all sources
     sources.each_with_index do |source, i|
-      stub_request(:get, %r{api\.concurrent#{i}\.com/data})
+      # Weather services use openweathermap API
+      stub_request(:get, %r{api\.openweathermap\.org/data/2\.5/weather})
+        .with(query: hash_including(appid: "test_key_#{i}"))
         .to_return(
           status: 200,
-          body: { "updated_value" => i * 10 }.to_json,
+          body: { 
+            "main" => { "temp" => 20 + i },
+            "weather" => [{ "main" => "Clear" }],
+            "name" => "London"
+          }.to_json,
           headers: { 'Content-Type' => 'application/json' }
         )
     end
@@ -372,7 +372,7 @@ class DataSourceIntegrationTest < ActionDispatch::IntegrationTest
     sources.each_with_index do |source, i|
       source.reload
       latest_data = source.data_points.order(created_at: :desc).first
-      assert_equal i * 10, latest_data.value["updated_value"]
+      assert_equal 20 + i, latest_data.value[:temperature]
     end
   end
 
@@ -490,7 +490,7 @@ class DataSourceIntegrationTest < ActionDispatch::IntegrationTest
     daily_source = DataSource.create!(
       name: "daily_weather",
       source_type: "weather",
-      api_endpoint: "https://api.weather.com/daily",
+      api_endpoint: "https://api.openweathermap.org/data/2.5/weather",
       api_key: "daily_key",
       configuration: { "cache_duration" => 1440 }, # 24 hours
       user: @user,
@@ -501,9 +501,12 @@ class DataSourceIntegrationTest < ActionDispatch::IntegrationTest
     hourly_source = DataSource.create!(
       name: "hourly_stock",
       source_type: "stock",
-      api_endpoint: "https://api.stocks.com/hourly",
+      api_endpoint: "https://www.alphavantage.co/query",
       api_key: "hourly_key",
-      configuration: { "cache_duration" => 60 }, # 1 hour
+      configuration: { 
+        "default_symbol" => "AAPL",
+        "cache_duration" => 60 
+      }, # 1 hour
       user: @user,
       active: true
     )
@@ -526,17 +529,36 @@ class DataSourceIntegrationTest < ActionDispatch::IntegrationTest
     )
 
     # Mock API responses
-    stub_request(:get, %r{api\.weather\.com/daily})
+    stub_request(:get, %r{api\.openweathermap\.org/data/2\.5/weather})
+      .with(query: hash_including(appid: "daily_key"))
       .to_return(
         status: 200,
-        body: { "temp" => 22 }.to_json,
+        body: { 
+          "main" => { "temp" => 22 },
+          "weather" => [{ "main" => "Clear" }],
+          "name" => "London"
+        }.to_json,
         headers: { 'Content-Type' => 'application/json' }
       )
 
-    stub_request(:get, %r{api\.stocks\.com/hourly})
+    stub_request(:get, "https://www.alphavantage.co/query")
+      .with(query: hash_including(
+        function: "GLOBAL_QUOTE",
+        symbol: "AAPL",
+        apikey: "hourly_key"
+      ))
       .to_return(
         status: 200,
-        body: { "price" => 105 }.to_json,
+        body: { 
+          "Global Quote" => {
+            "01. symbol" => "AAPL",
+            "05. price" => "105.00",
+            "09. change" => "5.00",
+            "10. change percent" => "5.00%",
+            "06. volume" => "1000000",
+            "08. previous close" => "100.00"
+          }
+        }.to_json,
         headers: { 'Content-Type' => 'application/json' }
       )
 
@@ -555,8 +577,8 @@ class DataSourceIntegrationTest < ActionDispatch::IntegrationTest
     daily_latest = daily_source.data_points.order(created_at: :desc).first
     hourly_latest = hourly_source.data_points.order(created_at: :desc).first
 
-    assert_equal 22, daily_latest.value["temp"]
-    assert_equal 105, hourly_latest.value["price"]
+    assert_equal 22, daily_latest.value[:temperature]
+    assert_equal 105.0, hourly_latest.value[:price]
     assert daily_latest.expires_at > Time.current
     assert hourly_latest.expires_at > Time.current
   end

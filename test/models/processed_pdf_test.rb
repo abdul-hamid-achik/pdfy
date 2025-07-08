@@ -228,7 +228,7 @@ class ProcessedPdfTest < ActiveSupport::TestCase
     @processed_pdf.save!
     
     # Create an older processed PDF
-    older_pdf = ProcessedPdf.create!(
+    older_pdf = ProcessedPdf.new(
       pdf_template: @pdf_template,
       original_html: "<h1>Old Document</h1>"
     )
@@ -237,10 +237,11 @@ class ProcessedPdfTest < ActiveSupport::TestCase
       filename: "old.pdf",
       content_type: "application/pdf"
     )
+    older_pdf.save!
     older_pdf.update!(created_at: 2.hours.ago)
     
     # Create a newer processed PDF
-    newer_pdf = ProcessedPdf.create!(
+    newer_pdf = ProcessedPdf.new(
       pdf_template: @pdf_template,
       original_html: "<h1>New Document</h1>"
     )
@@ -249,6 +250,7 @@ class ProcessedPdfTest < ActiveSupport::TestCase
       filename: "new.pdf",
       content_type: "application/pdf"
     )
+    newer_pdf.save!
     newer_pdf.update!(created_at: 1.minute.ago)
     
     pdfs = @pdf_template.processed_pdfs.order(created_at: :desc)

@@ -70,7 +70,7 @@ class LocationServiceTest < ActiveSupport::TestCase
         headers: { 'Content-Type' => 'application/json' }
       )
 
-    result = @service.fetch({ "ip" => "1.1.1.1" })
+    result = @service.fetch({ ip: "1.1.1.1" })
 
     assert result.success?
     assert_equal "Sydney", result.data[:city]
@@ -111,7 +111,7 @@ class LocationServiceTest < ActiveSupport::TestCase
         headers: { 'Content-Type' => 'application/json' }
       )
 
-    result = @service.fetch({ "ip" => "192.168.1.1" })
+    result = @service.fetch({ ip: "192.168.1.1" })
 
     assert_not result.success?
     assert_includes result.error, "Reserved IP Address"
@@ -316,7 +316,7 @@ class LocationServiceTest < ActiveSupport::TestCase
         headers: { 'Content-Type' => 'application/json' }
       )
 
-    result = @service.fetch({ "ip" => "2001:4860:4860::8888" })
+    result = @service.fetch({ ip: "2001:4860:4860::8888" })
 
     assert result.success?
     assert_equal "Mountain View", result.data[:city]

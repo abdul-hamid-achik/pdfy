@@ -47,10 +47,13 @@ class NewsService < BaseApiService
   
   def build_query_params(parameters)
     params = {}
+    endpoint = parameters[:endpoint] || 'top-headlines'
     
-    # For top headlines
-    params[:country] = parameters[:country] || configuration['country'] || 'us'
-    params[:category] = parameters[:category] if parameters[:category]
+    # For top headlines endpoint
+    if endpoint == 'top-headlines'
+      params[:country] = parameters[:country] || configuration['country'] || 'us'
+      params[:category] = parameters[:category] if parameters[:category]
+    end
     
     # For everything endpoint
     params[:q] = parameters[:query] if parameters[:query]

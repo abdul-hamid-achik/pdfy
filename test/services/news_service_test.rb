@@ -110,7 +110,7 @@ class NewsServiceTest < ActiveSupport::TestCase
       "totalResults" => 1,
       "articles" => [
         {
-          "source" => { "id" => null, "name" => "Example News" },
+          "source" => { "id" => nil, "name" => "Example News" },
           "title" => "AI Search Result",
           "description" => "Article about AI",
           "url" => "https://example.com/ai-search",
