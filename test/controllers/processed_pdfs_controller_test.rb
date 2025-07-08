@@ -7,9 +7,14 @@ class ProcessedPdfsControllerTest < ActionDispatch::IntegrationTest
     @user = users(:one)
     @pdf_template = pdf_templates(:one)
     @processed_pdf = @pdf_template.processed_pdfs.create!(
-      filename: "invoice_001.pdf",
       original_html: "<div><h1>Invoice #001</h1><p>Bill to: John Doe</p></div>",
       variables_used: { "invoice_number" => "001", "customer_name" => "John Doe" }
+    )
+    # Attach a dummy PDF file
+    @processed_pdf.pdf_file.attach(
+      io: StringIO.new("Dummy PDF content"),
+      filename: "invoice_001.pdf",
+      content_type: "application/pdf"
     )
   end
 
@@ -22,7 +27,7 @@ class ProcessedPdfsControllerTest < ActionDispatch::IntegrationTest
     sign_in @user
     get pdf_template_processed_pdf_url(@pdf_template, @processed_pdf)
     assert_response :success
-    assert_select "h1", "PDF: invoice_001.pdf"
+    assert_select "h1", /PDF: monthly-report_\d{8}_\d{6}\.pdf/
   end
 
   test "should get new" do
