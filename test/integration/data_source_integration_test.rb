@@ -83,10 +83,10 @@ class DataSourceIntegrationTest < ActionDispatch::IntegrationTest
     stock_source = DataSource.create!(
       name: "integration_stock",
       source_type: "stock",
-      api_endpoint: "https://api.example.com/stock",
+      api_endpoint: "https://www.alphavantage.co/query",
       api_key: "test_stock_key",
       configuration: {
-        "symbol" => "AAPL",
+        "default_symbol" => "AAPL",
         "cache_duration" => 30
       },
       user: @user,
@@ -110,13 +110,24 @@ class DataSourceIntegrationTest < ActionDispatch::IntegrationTest
 
     # Test refresh all job
     mock_stock_response = {
-      "symbol" => "AAPL",
-      "price" => 152.75,
-      "change" => 5.25,
-      "volume" => 1234567
+      "Global Quote" => {
+        "01. symbol" => "AAPL",
+        "05. price" => "152.75",
+        "09. change" => "5.25",
+        "10. change percent" => "3.56%",
+        "06. volume" => "1234567",
+        "08. previous close" => "147.50"
+      }
     }
 
-    stub_request(:get, %r{api\.example\.com/stock})
+    stub_request(:get, "https://www.alphavantage.co/query")
+      .with(
+        query: {
+          function: "GLOBAL_QUOTE",
+          symbol: "AAPL",
+          apikey: "test_stock_key"
+        }
+      )
       .to_return(
         status: 200,
         body: mock_stock_response.to_json,
@@ -132,7 +143,7 @@ class DataSourceIntegrationTest < ActionDispatch::IntegrationTest
     stock_source.reload
     latest_data_point = stock_source.data_points.order(created_at: :desc).first
     assert latest_data_point.id != expired_data_point.id
-    assert_equal 152.75, latest_data_point.value["price"]
+    assert_equal 152.75, latest_data_point.value[:price]
     assert latest_data_point.expires_at > Time.current
   end
 
