@@ -220,7 +220,7 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
     
     # Create some processed PDFs
     5.times do |i|
-      pdf = @pdf_template.processed_pdfs.create!(
+      pdf = @pdf_template.processed_pdfs.build(
         original_html: "<h1>Test #{i}</h1>",
         variables_used: { "name" => "Test #{i}" }
       )
@@ -229,6 +229,7 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
         filename: "test_#{i}.pdf",
         content_type: "application/pdf"
       )
+      pdf.save!
     end
 
     get pdf_template_url(@pdf_template)
@@ -242,7 +243,7 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
     
     # Create 15 processed PDFs
     15.times do |i|
-      pdf = @pdf_template.processed_pdfs.create!(
+      pdf = @pdf_template.processed_pdfs.build(
         original_html: "<h1>Test #{i}</h1>",
         variables_used: { "name" => "Test #{i}" }
       )
@@ -251,6 +252,7 @@ class PdfTemplatesControllerTest < ActionDispatch::IntegrationTest
         filename: "test_#{i}.pdf",
         content_type: "application/pdf"
       )
+      pdf.save!
     end
 
     get pdf_template_url(@pdf_template)

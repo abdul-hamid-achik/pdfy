@@ -4,7 +4,7 @@ class ProcessedPdf < ApplicationRecord
   has_one_attached :pdf_file
   
   validates :original_html, presence: true
-  validates :pdf_file, presence: true
+  validates :pdf_file, attached: true, on: :update
   
   before_validation :set_generated_at, on: :create
   

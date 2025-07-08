@@ -41,5 +41,8 @@ module Pdfy
     
     # Use Sidekiq for Active Job
     config.active_job.queue_adapter = :sidekiq
+    
+    # Disable require_master_key for test environment
+    config.require_master_key = Rails.env.production?
   end
 end

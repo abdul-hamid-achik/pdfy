@@ -6,7 +6,7 @@ class ProcessedPdfsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:one)
     @pdf_template = pdf_templates(:one)
-    @processed_pdf = @pdf_template.processed_pdfs.create!(
+    @processed_pdf = @pdf_template.processed_pdfs.build(
       original_html: "<div><h1>Invoice #001</h1><p>Bill to: John Doe</p></div>",
       variables_used: { "invoice_number" => "001", "customer_name" => "John Doe" }
     )
@@ -16,6 +16,7 @@ class ProcessedPdfsControllerTest < ActionDispatch::IntegrationTest
       filename: "invoice_001.pdf",
       content_type: "application/pdf"
     )
+    @processed_pdf.save!
   end
 
   test "should redirect to login when not authenticated" do
@@ -169,13 +170,6 @@ class ProcessedPdfsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should download processed pdf" do
-    # Attach a fake PDF file
-    @processed_pdf.pdf_file.attach(
-      io: StringIO.new("fake pdf content"),
-      filename: "test.pdf",
-      content_type: "application/pdf"
-    )
-    
     sign_in @user
     get download_pdf_template_processed_pdf_url(@pdf_template, @processed_pdf)
     

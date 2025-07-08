@@ -51,11 +51,14 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
 
-  # Configure Active Record encryption for test environment
-  config.active_record.encryption.primary_key = "test_primary_key_12345678901234567890123456789012"
-  config.active_record.encryption.deterministic_key = "test_deterministic_key_12345678901234567890123456789012"
-  config.active_record.encryption.key_derivation_salt = "test_salt_12345678901234567890123456789012"
+  # ActiveRecord encryption keys are now stored in test credentials
 
   # Use test adapter for Active Job testing
   config.active_job.queue_adapter = :test
+  
+  # Skip credentials for test environment
+  config.require_master_key = false
+  
+  # Set secret key base for test environment
+  config.secret_key_base = "test_secret_key_base_for_testing_purposes_only_12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
 end

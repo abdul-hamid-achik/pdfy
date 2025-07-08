@@ -113,9 +113,19 @@ class FetchDataSourceJobTest < ActiveJob::TestCase
       )
     
     stub_request(:get, "https://www.alphavantage.co/query")
+      .with(query: hash_including(apikey: "test_key"))
       .to_return(
         status: 200,
-        body: { "Global Quote" => { "01. symbol" => "AAPL", "05. price" => "150.00" } }.to_json,
+        body: { 
+          "Global Quote" => { 
+            "01. symbol" => "AAPL", 
+            "05. price" => "150.00",
+            "09. change" => "2.50",
+            "10. change percent" => "1.69%",
+            "06. volume" => "50000000",
+            "08. previous close" => "147.50"
+          } 
+        }.to_json,
         headers: { 'Content-Type' => 'application/json' }
       )
     

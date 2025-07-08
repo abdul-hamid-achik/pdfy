@@ -87,25 +87,25 @@ class PdfGenerationFlowTest < ActionDispatch::IntegrationTest
 
     # Step 4: Submit the form with variable values
     mock_pdf_content = "MOCK_PDF_CONTENT_FOR_INTEGRATION_TEST"
-    Grover.any_instance.stub(:to_pdf, mock_pdf_content) do
-      post pdf_template_processed_pdfs_path(template), params: {
-        processed_pdf: {
-          metadata: { "source" => "integration_test" }
-        },
-        variables: {
-          "invoice_number" => "INT-001",
-          "company_name" => "Test Company Inc.",
-          "invoice_date" => "2024-01-15",
-          "client_name" => "Integration Test Client",
-          "client_address" => "123 Test Street, Test City, TC 12345",
-          "item_description" => "Integration Testing Services",
-          "item_quantity" => "10",
-          "item_price" => "150.00",
-          "item_total" => "1500.00",
-          "grand_total" => "1500.00"
-        }
+    Grover.any_instance.stubs(:to_pdf).returns(mock_pdf_content)
+    
+    post pdf_template_processed_pdfs_path(template), params: {
+      processed_pdf: {
+        metadata: { "source" => "integration_test" }
+      },
+      variables: {
+        "invoice_number" => "INT-001",
+        "company_name" => "Test Company Inc.",
+        "invoice_date" => "2024-01-15",
+        "client_name" => "Integration Test Client",
+        "client_address" => "123 Test Street, Test City, TC 12345",
+        "item_description" => "Integration Testing Services",
+        "item_quantity" => "10",
+        "item_price" => "150.00",
+        "item_total" => "1500.00",
+        "grand_total" => "1500.00"
       }
-    end
+    }
 
     assert_response :redirect
     follow_redirect!
@@ -221,16 +221,16 @@ class PdfGenerationFlowTest < ActionDispatch::IntegrationTest
     )
 
     mock_pdf_content = "PDF_WITH_MISSING_VARS"
-    Grover.any_instance.stub(:to_pdf, mock_pdf_content) do
-      post pdf_template_processed_pdfs_path(template), params: {
-        processed_pdf: {},
-        variables: {
-          "title" => "Test Document",
-          "required_field" => "This is provided"
-          # optional_field is missing
-        }
+    Grover.any_instance.stubs(:to_pdf).returns(mock_pdf_content)
+    
+    post pdf_template_processed_pdfs_path(template), params: {
+      processed_pdf: {},
+      variables: {
+        "title" => "Test Document",
+        "required_field" => "This is provided"
+        # optional_field is missing
       }
-    end
+    }
 
     assert_response :redirect
     follow_redirect!
@@ -254,12 +254,12 @@ class PdfGenerationFlowTest < ActionDispatch::IntegrationTest
     )
 
     # Mock Grover to raise an error
-    Grover.any_instance.stub(:to_pdf, -> { raise StandardError, "Simulated PDF generation error" }) do
-      post pdf_template_processed_pdfs_path(template), params: {
-        processed_pdf: {},
-        variables: { "title" => "Error Test" }
-      }
-    end
+    Grover.any_instance.stubs(:to_pdf).raises(StandardError, "Simulated PDF generation error")
+    
+    post pdf_template_processed_pdfs_path(template), params: {
+      processed_pdf: {},
+      variables: { "title" => "Error Test" }
+    }
 
     assert_response :unprocessable_entity
     assert_select "div.alert", text: /Error generating PDF: Simulated PDF generation error/
@@ -339,10 +339,10 @@ class PdfGenerationFlowTest < ActionDispatch::IntegrationTest
     mock_pdf_content = "COMPLEX_HTML_PDF"
     generated_html = nil
     
-    Grover.any_instance.stub(:to_pdf) do |html_content|
+    Grover.any_instance.stubs(:to_pdf).with do |html_content|
       generated_html = html_content
-      mock_pdf_content
-    end
+      true
+    end.returns(mock_pdf_content)
 
     post pdf_template_processed_pdfs_path(template), params: {
       processed_pdf: {},
@@ -461,21 +461,21 @@ class PdfGenerationFlowTest < ActionDispatch::IntegrationTest
     )
 
     mock_pdf_content = "WEATHER_REPORT_PDF"
-    Grover.any_instance.stub(:to_pdf, mock_pdf_content) do
-      post pdf_template_processed_pdfs_path(template), params: {
-        processed_pdf: {
-          metadata: { "data_source_id" => data_source.id }
-        },
-        variables: {
-          "location" => "Test City",
-          "temperature" => "22",
-          "condition" => "sunny",
-          "humidity" => "65",
-          "report_date" => "2024-01-15",
-          "client_name" => "Weather Service Client"
-        }
+    Grover.any_instance.stubs(:to_pdf).returns(mock_pdf_content)
+    
+    post pdf_template_processed_pdfs_path(template), params: {
+      processed_pdf: {
+        metadata: { "data_source_id" => data_source.id }
+      },
+      variables: {
+        "location" => "Test City",
+        "temperature" => "22",
+        "condition" => "sunny",
+        "humidity" => "65",
+        "report_date" => "2024-01-15",
+        "client_name" => "Weather Service Client"
       }
-    end
+    }
 
     assert_response :redirect
     follow_redirect!
