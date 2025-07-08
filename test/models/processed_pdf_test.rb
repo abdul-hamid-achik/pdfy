@@ -258,10 +258,19 @@ class ProcessedPdfTest < ActiveSupport::TestCase
       active: true
     )
     
-    other_pdf = ProcessedPdf.create!(
+    other_pdf = ProcessedPdf.new(
       pdf_template: other_template,
       original_html: "<h1>Other Document</h1>"
     )
+    
+    # Attach PDF file to the other_pdf
+    dummy_pdf_content = "%PDF-1.4\n1 0 obj\n<<\n/Type /Catalog\n/Pages 2 0 R\n>>\nendobj\n2 0 obj\n<<\n/Type /Pages\n/Kids [3 0 R]\n/Count 1\n>>\nendobj\n3 0 obj\n<<\n/Type /Page\n/Parent 2 0 R\n/MediaBox [0 0 612 792]\n/Contents 4 0 R\n>>\nendobj\n4 0 obj\n<<\n/Length 44\n>>\nstream\nBT\n/F1 12 Tf\n72 720 Td\n(Other Document) Tj\nET\nendstream\nendobj\nxref\n0 5\n0000000000 65535 f \n0000000009 00000 n \n0000000058 00000 n \n0000000115 00000 n \n0000000207 00000 n \ntrailer\n<<\n/Size 5\n/Root 1 0 R\n>>\nstartxref\n299\n%%EOF"
+    other_pdf.pdf_file.attach(
+      io: StringIO.new(dummy_pdf_content),
+      filename: "other.pdf", 
+      content_type: "application/pdf"
+    )
+    other_pdf.save!
     
     template_pdfs = @pdf_template.processed_pdfs
     assert_includes template_pdfs, @processed_pdf
