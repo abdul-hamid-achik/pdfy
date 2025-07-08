@@ -1,3 +1,9 @@
+one:
+  email: admin1@pdfy.com
+  encrypted_password: <%= Devise::Encryptor.digest(AdminUser, 'password') %>
+  created_at: <%= 30.days.ago %>
+  updated_at: <%= 30.days.ago %>
+
 admin_one:
   email: admin@pdfy.com
   encrypted_password: <%= Devise::Encryptor.digest(AdminUser, 'password') %>

@@ -233,8 +233,9 @@ class DataSourceIntegrationTest < ActionDispatch::IntegrationTest
       active: true
     )
 
-    # Mock network timeout
-    stub_request(:get, %r{api\.slow\.com/weather})
+    # Mock network timeout - match the actual API being called
+    stub_request(:get, %r{api\.openweathermap\.org/data/2\.5/weather})
+      .with(query: hash_including(appid: "test_timeout_key"))
       .to_timeout
 
     # Execute job and expect timeout to be handled
@@ -292,7 +293,9 @@ class DataSourceIntegrationTest < ActionDispatch::IntegrationTest
     stub_request(:get, %r{api\.complex\.com/data})
       .with(query: hash_including(
         region: "us-east",
-        format: "json"
+        format: "json",
+        category: "technology",
+        custom_param: "test_value"
       ))
       .to_return(
         status: 200,

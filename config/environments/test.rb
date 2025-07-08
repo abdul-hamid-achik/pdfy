@@ -55,4 +55,7 @@ Rails.application.configure do
   config.active_record.encryption.primary_key = "test_primary_key_12345678901234567890123456789012"
   config.active_record.encryption.deterministic_key = "test_deterministic_key_12345678901234567890123456789012"
   config.active_record.encryption.key_derivation_salt = "test_salt_12345678901234567890123456789012"
+
+  # Use test adapter for Active Job testing
+  config.active_job.queue_adapter = :test
 end

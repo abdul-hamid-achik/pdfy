@@ -24,7 +24,7 @@ class RefreshAllDataSourcesJobTest < ActiveJob::TestCase
 
   test "should perform job successfully" do
     assert_nothing_raised do
-      RefreshAllDataSourcesJobTest.perform_now
+      RefreshAllDataSourcesJob.perform_now
     end
   end
 
