@@ -169,12 +169,16 @@ class BaseApiServiceTest < ActiveSupport::TestCase
   end
 
   test "should provide default error handling" do
-    # Don't define make_request, so it will raise NoMethodError
+    # Don't define parse_response, make_request returns success
+    @service.define_singleton_method(:make_request) do |params|
+      OpenStruct.new(code: 200, parsed_response: { "data" => "test" })
+    end
+    
     result = @service.fetch({})
     
     assert_not result.success?
     assert_nil result.data
-    assert_includes result.error, "undefined method"
+    assert_includes result.error, "Subclasses must implement parse_response"
   end
 
   test "should handle timeout errors" do

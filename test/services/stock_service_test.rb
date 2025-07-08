@@ -46,7 +46,7 @@ class StockServiceTest < ActiveSupport::TestCase
         headers: { 'Content-Type' => 'application/json' }
       )
 
-    result = @service.fetch({ "symbol" => "AAPL" })
+    result = @service.fetch({ symbol: "AAPL" })
 
     assert result.success?
     assert_equal "AAPL", result.data[:symbol]
@@ -113,7 +113,7 @@ class StockServiceTest < ActiveSupport::TestCase
           headers: { 'Content-Type' => 'application/json' }
         )
 
-      result = @service.fetch({ "symbol" => symbol })
+      result = @service.fetch({ symbol: symbol })
 
       assert result.success?
       assert_equal symbol, result.data[:symbol]
@@ -137,7 +137,7 @@ class StockServiceTest < ActiveSupport::TestCase
         headers: { 'Content-Type' => 'application/json' }
       )
 
-    result = @service.fetch({ "symbol" => "INVALID" })
+    result = @service.fetch({ symbol: "INVALID" })
 
     assert_not result.success?
     assert_includes result.error, "Invalid API call"
@@ -160,7 +160,7 @@ class StockServiceTest < ActiveSupport::TestCase
         headers: { 'Content-Type' => 'application/json' }
       )
 
-    result = @service.fetch({ "symbol" => "AAPL" })
+    result = @service.fetch({ symbol: "AAPL" })
 
     assert_not result.success?
     assert_includes result.error, "rate limit"
@@ -175,7 +175,7 @@ class StockServiceTest < ActiveSupport::TestCase
       })
       .to_return(status: 500, body: "Internal Server Error")
 
-    result = @service.fetch({ "symbol" => "AAPL" })
+    result = @service.fetch({ symbol: "AAPL" })
 
     assert_not result.success?
     assert_includes result.error, "HTTP 500"
@@ -190,7 +190,7 @@ class StockServiceTest < ActiveSupport::TestCase
       })
       .to_timeout
 
-    result = @service.fetch({ "symbol" => "AAPL" })
+    result = @service.fetch({ symbol: "AAPL" })
 
     assert_not result.success?
     assert_includes result.error.downcase, "timeout"
@@ -209,7 +209,7 @@ class StockServiceTest < ActiveSupport::TestCase
         headers: { 'Content-Type' => 'application/json' }
       )
 
-    result = @service.fetch({ "symbol" => "AAPL" })
+    result = @service.fetch({ symbol: "AAPL" })
 
     assert_not result.success?
     assert_includes result.error.downcase, "json"
@@ -239,7 +239,7 @@ class StockServiceTest < ActiveSupport::TestCase
         headers: { 'Content-Type' => 'application/json' }
       )
 
-    result = @service.fetch({ "symbol" => "AAPL" })
+    result = @service.fetch({ symbol: "AAPL" })
 
     assert result.success?
     assert result.metadata.present?
@@ -268,7 +268,7 @@ class StockServiceTest < ActiveSupport::TestCase
         headers: { 'Content-Type' => 'application/json' }
       )
 
-    result = @service.fetch({ "symbol" => "AAPL" })
+    result = @service.fetch({ symbol: "AAPL" })
 
     assert_not result.success?
     assert_includes result.error, "Global Quote"
@@ -294,7 +294,7 @@ class StockServiceTest < ActiveSupport::TestCase
         headers: { 'Content-Type' => 'application/json' }
       )
 
-    result = @service.fetch({ "symbol" => "AAPL" })
+    result = @service.fetch({ symbol: "AAPL" })
 
     assert_not result.success?
     assert_includes result.error, "apikey is invalid"
@@ -324,7 +324,7 @@ class StockServiceTest < ActiveSupport::TestCase
         headers: { 'Content-Type' => 'application/json' }
       )
 
-    result = @service.fetch({ "symbol" => "AAPL" })
+    result = @service.fetch({ symbol: "AAPL" })
 
     assert result.success?
     assert_equal 1.69, result.data[:change_percent]
@@ -354,7 +354,7 @@ class StockServiceTest < ActiveSupport::TestCase
         headers: { 'Content-Type' => 'application/json' }
       )
 
-    result = @service.fetch({ "symbol" => "AAPL" })
+    result = @service.fetch({ symbol: "AAPL" })
 
     assert result.success?
     assert_equal 123456789, result.data[:volume]
@@ -387,7 +387,9 @@ class StockServiceTest < ActiveSupport::TestCase
         headers: { 'Content-Type' => 'application/json' }
       )
 
-    result = @service.fetch({ "symbol" => "AAPL" })
+    # Need to recreate service after updating data source
+    @service = StockService.new(@data_source)
+    result = @service.fetch({ symbol: "AAPL" })
 
     assert result.success?
     assert_equal "AAPL", result.data[:symbol]

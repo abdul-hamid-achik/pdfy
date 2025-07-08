@@ -104,31 +104,91 @@ class FetchDataSourceJobTest < ActiveJob::TestCase
   end
 
   test "should work with different data source types" do
+    # Mock all API responses
+    stub_request(:get, %r{api\.openweathermap\.org/data/2\.5/weather})
+      .to_return(
+        status: 200,
+        body: { "main" => { "temp" => 20 }, "weather" => [{ "main" => "Clear" }] }.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+    
+    stub_request(:get, "https://www.alphavantage.co/query")
+      .to_return(
+        status: 200,
+        body: { "Global Quote" => { "01. symbol" => "AAPL", "05. price" => "150.00" } }.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+    
+    stub_request(:get, %r{newsapi\.org/v2})
+      .to_return(
+        status: 200,
+        body: { "status" => "ok", "articles" => [] }.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+    
+    stub_request(:get, %r{ipapi\.co})
+      .to_return(
+        status: 200,
+        body: { "city" => "London", "country" => "UK" }.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+    
+    stub_request(:get, %r{api\.example\.com/custom})
+      .to_return(
+        status: 200,
+        body: { "data" => "custom" }.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+    
     data_sources = []
     
-    # Create different types of data sources
-    %w[weather stock news location custom].each_with_index do |type, index|
-      ds = DataSource.create!(
-        name: "#{type}_job_test_#{index}",
-        source_type: type,
-        api_endpoint: "https://api.example.com/#{type}",
-        api_key: "test_key",
-        user: @user,
-        active: true
-      )
-      data_sources << ds
-    end
+    # Create different types of data sources with correct endpoints
+    data_sources << DataSource.create!(
+      name: "weather_job_test",
+      source_type: "weather",
+      api_endpoint: "https://api.openweathermap.org/data/2.5/weather",
+      api_key: "test_key",
+      user: @user,
+      active: true
+    )
+    
+    data_sources << DataSource.create!(
+      name: "stock_job_test",
+      source_type: "stock",
+      api_endpoint: "https://www.alphavantage.co/query",
+      api_key: "test_key",
+      configuration: { "default_symbol" => "AAPL" },
+      user: @user,
+      active: true
+    )
+    
+    data_sources << DataSource.create!(
+      name: "news_job_test",
+      source_type: "news",
+      api_endpoint: "https://newsapi.org/v2/top-headlines",
+      api_key: "test_key",
+      user: @user,
+      active: true
+    )
+    
+    data_sources << DataSource.create!(
+      name: "location_job_test",
+      source_type: "location",
+      api_endpoint: "https://ipapi.co/json",
+      user: @user,
+      active: true
+    )
+    
+    data_sources << DataSource.create!(
+      name: "custom_job_test",
+      source_type: "custom",
+      api_endpoint: "https://api.example.com/custom",
+      api_key: "test_key",
+      user: @user,
+      active: true
+    )
     
     data_sources.each do |ds|
-      # Mock each data source's fetch_data method
-      ds.define_singleton_method(:fetch_data) do
-        OpenStruct.new(
-          success?: true,
-          data: { "type" => ds.source_type },
-          metadata: { "fetched_at" => Time.current }
-        )
-      end
-      
       assert_nothing_raised do
         FetchDataSourceJob.perform_now(ds.id)
       end
