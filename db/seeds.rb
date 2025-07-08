@@ -21,7 +21,7 @@ puts "Created users"
 # Create sample PDF templates
 invoice_template = PdfTemplate.find_or_create_by!(name: "Invoice Template", user: user) do |template|
   template.description = "A professional invoice template with company branding"
-  template.template_content = <<~HTML
+  template.template_content = <<~'HTML'
     <div class="invoice-container">
       <div class="header">
         <h1 class="text-3xl font-bold text-gray-800">INVOICE</h1>
@@ -81,7 +81,7 @@ end
 
 letter_template = PdfTemplate.find_or_create_by!(name: "Business Letter", user: user) do |template|
   template.description = "A formal business letter template"
-  template.template_content = <<~HTML
+  template.template_content = <<~'HTML'
     <div class="letter-container">
       <div class="mb-8">
         <p>{{sender_name}}</p>
@@ -121,7 +121,7 @@ end
 
 certificate_template = PdfTemplate.find_or_create_by!(name: "Certificate of Achievement", user: user) do |template|
   template.description = "An elegant certificate template for achievements and awards"
-  template.template_content = <<~HTML
+  template.template_content = <<~'HTML'
     <div class="certificate-container text-center p-12" style="border: 3px solid #d4af37;">
       <div class="mb-8">
         <h1 class="text-4xl font-serif text-gray-800">Certificate of Achievement</h1>
@@ -164,7 +164,7 @@ end
 
 report_template = PdfTemplate.find_or_create_by!(name: "Simple Report", user: user) do |template|
   template.description = "A clean report template without variables"
-  template.template_content = <<~HTML
+  template.template_content = <<~'HTML'
     <div class="report-container">
       <header class="mb-8">
         <h1 class="text-3xl font-bold text-center text-gray-800">Monthly Sales Report</h1>
@@ -214,7 +214,7 @@ end
 # Create more diverse template examples
 meeting_minutes = PdfTemplate.find_or_create_by!(name: "Meeting Minutes", user: user) do |template|
   template.description = "Professional meeting minutes template"
-  template.template_content = <<~HTML
+  template.template_content = <<~'HTML'
     <div class="meeting-minutes max-w-4xl mx-auto p-8">
       <header class="border-b-2 border-gray-300 pb-6 mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Meeting Minutes</h1>
@@ -274,7 +274,7 @@ end
 
 project_proposal = PdfTemplate.find_or_create_by!(name: "Project Proposal", user: user) do |template|
   template.description = "Comprehensive project proposal template"
-  template.template_content = <<~HTML
+  template.template_content = <<~'HTML'
     <div class="proposal max-w-4xl mx-auto p-8">
       <div class="cover-page text-center mb-12">
         <h1 class="text-4xl font-bold text-blue-800 mb-4">{{project_title}}</h1>
@@ -345,7 +345,7 @@ end
 
 financial_report = PdfTemplate.find_or_create_by!(name: "Financial Report", user: user) do |template|
   template.description = "Quarterly financial report with dynamic stock data"
-  template.template_content = <<~HTML
+  template.template_content = <<~'HTML'
     <div class="financial-report max-w-4xl mx-auto p-8">
       <header class="text-center mb-8 border-b-2 border-indigo-200 pb-6">
         <h1 class="text-3xl font-bold text-indigo-800">{{company_name}}</h1>
@@ -439,7 +439,7 @@ end
 
 event_invitation = PdfTemplate.find_or_create_by!(name: "Event Invitation", user: user) do |template|
   template.description = "Elegant event invitation template"
-  template.template_content = <<~HTML
+  template.template_content = <<~'HTML'
     <div class="invitation max-w-2xl mx-auto p-8 bg-gradient-to-br from-purple-50 to-pink-50">
       <div class="text-center border-4 border-purple-200 p-8 rounded-lg bg-white shadow-lg">
         <div class="mb-6">
@@ -495,7 +495,7 @@ end
 
 product_spec = PdfTemplate.find_or_create_by!(name: "Product Specification", user: user) do |template|
   template.description = "Technical product specification document"
-  template.template_content = <<~HTML
+  template.template_content = <<~'HTML'
     <div class="product-spec max-w-4xl mx-auto p-8">
       <header class="mb-8">
         <div class="flex items-center justify-between border-b-2 border-blue-200 pb-4">
@@ -617,7 +617,7 @@ end
 
 news_newsletter = PdfTemplate.find_or_create_by!(name: "News Newsletter", user: user) do |template|
   template.description = "Dynamic newsletter template with live news integration"
-  template.template_content = <<~HTML
+  template.template_content = <<~'HTML'
     <div class="newsletter max-w-4xl mx-auto p-8">
       <header class="text-center mb-8 border-b-4 border-red-600 pb-6">
         <h1 class="text-4xl font-bold text-red-800">{{newsletter_title}}</h1>
@@ -798,7 +798,7 @@ end
 dynamic_report = PdfTemplate.find_or_create_by!(name: "Dynamic Business Report") do |template|
   template.user = user
   template.description = "A business report with live weather, stock, and location data"
-  template.template_content = <<~HTML
+  template.template_content = <<~'HTML'
     <div class="report-container">
       <header class="mb-8">
         <h1 class="text-3xl font-bold text-center text-gray-800">{{report_title}}</h1>

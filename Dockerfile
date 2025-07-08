@@ -56,13 +56,15 @@ ENV RAILS_ENV="development" \
     BUNDLE_WITHOUT="" \
     CHROME_BIN="/usr/bin/chromium"
 
-# Install gems
+# Install gems (do this before copying app code for better caching)
 COPY Gemfile Gemfile.lock ./
-RUN bundle install
+RUN bundle install && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
 
-# Install node modules
+# Install node modules (do this before copying app code for better caching)
 COPY package.json yarn.lock ./
-RUN yarn install
+RUN yarn install --frozen-lockfile && \
+    yarn cache clean
 
 # Copy application code
 COPY . .
