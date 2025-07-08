@@ -12,18 +12,15 @@ jobs:
     environment: production
     env:
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      SERVICE_ID: ${{ secrets.RAILWAY_SERVICE_NAME }}
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Link to Railway project
-      run: |
-        railway link --project ${{ secrets.RAILWAY_PROJECT_ID }} --environment production --service ${{ secrets.RAILWAY_SERVICE_NAME }}
-
     - name: Deploy to Railway
       run: |
-        railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }} --environment production --detach
+        railway up --service=${{ env.SERVICE_ID }} --environment=production --detach
 
     - name: Health check
       run: |
