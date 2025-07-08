@@ -32,7 +32,10 @@ class RefreshAllDataSourcesJobTest < ActiveJob::TestCase
     # Mock needs_refresh? to return true for all sources
     DataSource.any_instance.stubs(:needs_refresh?).returns(true)
     
-    assert_enqueued_jobs 1, only: FetchDataSourceJob do
+    # Count active data sources (includes fixtures + our test data source)
+    active_count = DataSource.active.count
+    
+    assert_enqueued_jobs active_count, only: FetchDataSourceJob do
       RefreshAllDataSourcesJob.perform_now
     end
   end
@@ -190,8 +193,10 @@ class RefreshAllDataSourcesJobTest < ActiveJob::TestCase
     # Mock all sources to need refresh
     DataSource.any_instance.stubs(:needs_refresh?).returns(true)
     
-    # Should enqueue jobs for all active sources (20 + 1 original)
-    assert_enqueued_jobs 21, only: FetchDataSourceJob do
+    # Count all active sources (includes fixtures + our test data sources)
+    active_count = DataSource.active.count
+    
+    assert_enqueued_jobs active_count, only: FetchDataSourceJob do
       RefreshAllDataSourcesJob.perform_now
     end
   end

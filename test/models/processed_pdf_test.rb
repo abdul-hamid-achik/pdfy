@@ -225,7 +225,7 @@ class ProcessedPdfTest < ActiveSupport::TestCase
   end
 
   test "should order by created_at descending by default" do
-    @processed_pdf.save!
+    # Don't save @processed_pdf yet, or set its created_at to be in between
     
     # Create an older processed PDF
     older_pdf = ProcessedPdf.new(
@@ -253,8 +253,13 @@ class ProcessedPdfTest < ActiveSupport::TestCase
     newer_pdf.save!
     newer_pdf.update!(created_at: 1.minute.ago)
     
+    # Now save @processed_pdf with a middle timestamp
+    @processed_pdf.save!
+    @processed_pdf.update!(created_at: 30.minutes.ago)
+    
     pdfs = @pdf_template.processed_pdfs.order(created_at: :desc)
     assert_equal newer_pdf, pdfs.first
+    assert_equal @processed_pdf, pdfs.second
     assert_equal older_pdf, pdfs.last
   end
 

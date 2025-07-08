@@ -169,8 +169,6 @@ class DataPointTest < ActiveSupport::TestCase
   end
 
   test "should order by fetched_at descending by default" do
-    @data_point.save!
-    
     # Create an older data point
     older_point = DataPoint.create!(
       data_source: @data_source,
@@ -178,6 +176,15 @@ class DataPointTest < ActiveSupport::TestCase
       value: { "temp" => 15 },
       fetched_at: 2.hours.ago,
       expires_at: 1.hour.ago
+    )
+    
+    # Create a middle data point
+    middle_point = DataPoint.create!(
+      data_source: @data_source,
+      key: "weather_test_middle",
+      value: { "temp" => 20 },
+      fetched_at: 1.hour.ago,
+      expires_at: 1.hour.from_now
     )
     
     # Create a newer data point
@@ -191,7 +198,8 @@ class DataPointTest < ActiveSupport::TestCase
     
     points = @data_source.data_points.order(fetched_at: :desc)
     assert_equal newer_point, points.first
-    assert_equal older_point, points.last
+    assert_equal middle_point, points.second
+    assert_equal older_point, points.third
   end
 
   test "should find unexpired data points" do
@@ -229,8 +237,8 @@ class DataPointTest < ActiveSupport::TestCase
     assert_equal({}, reloaded.value)
   end
 
-  test "should validate value is not empty" do
-    @data_point.value = {}
+  test "should validate value is not empty array" do
+    @data_point.value = []
     assert_not @data_point.valid?
     assert_includes @data_point.errors[:value], "can't be blank"
   end

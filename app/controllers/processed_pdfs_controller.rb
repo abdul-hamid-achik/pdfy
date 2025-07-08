@@ -52,7 +52,7 @@ class ProcessedPdfsController < ApplicationController
   private
 
   def set_pdf_template
-    @pdf_template = PdfTemplate.find(params[:pdf_template_id])
+    @pdf_template = current_user.admin? ? PdfTemplate.find(params[:pdf_template_id]) : current_user.pdf_templates.find(params[:pdf_template_id])
   end
 
   def set_processed_pdf
@@ -60,7 +60,7 @@ class ProcessedPdfsController < ApplicationController
   end
 
   def processed_pdf_params
-    params.require(:processed_pdf).permit(:metadata)
+    params.fetch(:processed_pdf, {}).permit(metadata: {})
   end
 
   def generate_pdf(html_content)

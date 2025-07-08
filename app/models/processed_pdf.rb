@@ -11,7 +11,8 @@ class ProcessedPdf < ApplicationRecord
   scope :recent, -> { order(generated_at: :desc) }
   
   def filename
-    "#{pdf_template.name.parameterize}_#{generated_at.strftime('%Y%m%d_%H%M%S')}.pdf"
+    timestamp = generated_at || Time.current
+    "#{pdf_template.name.parameterize}_#{timestamp.strftime('%Y%m%d_%H%M%S')}.pdf"
   end
   
   private

@@ -1,8 +1,10 @@
 require "test_helper"
 
 class PdfGenerationTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+  
   setup do
-    @user = User.create!(email: "test@example.com", password: "password")
+    @user = users(:one)
     @template = @user.pdf_templates.create!(
       name: "Test Invoice",
       template_content: <<~'HTML',
@@ -11,13 +13,17 @@ class PdfGenerationTest < ActionDispatch::IntegrationTest
         <p>Total: ${{total}}</p>
       HTML
     )
+    # Disable any template data sources to prevent dynamic data fetching
+    @template.template_data_sources.update_all(enabled: false)
   end
 
   test "should generate PDF with Grover" do
     sign_in @user
     
     post pdf_template_processed_pdfs_path(@template), params: {
-      processed_pdf: {},
+      processed_pdf: {
+        metadata: {}
+      },
       variables: {
         invoice_number: "INV-001",
         customer_name: "John Doe",
@@ -45,11 +51,13 @@ class PdfGenerationTest < ActionDispatch::IntegrationTest
     sign_in @user
     
     post pdf_template_processed_pdfs_path(@template), params: {
-      processed_pdf: {},
+      processed_pdf: {
+        metadata: {}
+      },
       variables: { invoice_number: "INV-001" }
     }
     
     assert_response :unprocessable_entity
-    assert_includes flash[:alert], "Chrome crashed"
+    assert_match /Chrome crashed/, flash[:alert]
   end
 end

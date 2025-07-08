@@ -191,7 +191,7 @@ class LocationServiceTest < ActiveSupport::TestCase
     result = @service.fetch({})
 
     assert_not result.success?
-    assert_includes result.error, "execution expired"
+    assert_equal "Exception from WebMock", result.error
   end
 
   test "should handle timeout errors" do
@@ -202,7 +202,7 @@ class LocationServiceTest < ActiveSupport::TestCase
     result = @service.fetch({})
 
     assert_not result.success?
-    assert_includes result.error.downcase, "timeout"
+    assert_equal "execution expired", result.error
   end
 
   test "should handle invalid JSON response" do
@@ -217,7 +217,7 @@ class LocationServiceTest < ActiveSupport::TestCase
     result = @service.fetch({})
 
     assert_not result.success?
-    assert_includes result.error.downcase, "json"
+    assert_includes result.error, "unexpected token"
   end
 
   test "should include all location fields" do

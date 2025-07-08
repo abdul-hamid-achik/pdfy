@@ -2,8 +2,10 @@ class DataPoint < ApplicationRecord
   belongs_to :data_source
   
   validates :key, presence: true
-  validates :value, presence: true
   validates :fetched_at, presence: true
+  validates :expires_at, presence: true
+  validate :expires_at_must_be_after_fetched_at
+  validate :value_must_not_be_nil
   
   scope :current, -> { where('expires_at IS NULL OR expires_at > ?', Time.current) }
   scope :expired, -> { where('expires_at <= ?', Time.current) }
@@ -28,6 +30,22 @@ class DataPoint < ApplicationRecord
   end
   
   private
+  
+  def expires_at_must_be_after_fetched_at
+    return unless fetched_at.present? && expires_at.present?
+    
+    if expires_at < fetched_at
+      errors.add(:expires_at, "must be after fetched_at")
+    end
+  end
+  
+  def value_must_not_be_nil
+    if value.nil?
+      errors.add(:value, "can't be blank")
+    elsif value.is_a?(Array) && value.empty?
+      errors.add(:value, "can't be blank")
+    end
+  end
   
   def format_weather_data
     return value unless value.is_a?(Hash)

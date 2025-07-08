@@ -10,6 +10,7 @@ class PdfTemplate < ApplicationRecord
   scope :active, -> { where(active: true) }
   
   def variable_names
+    return [] unless template_content.present?
     template_content.scan(/\{\{([^}]+)\}\}/).flatten.map(&:strip).uniq
   end
   

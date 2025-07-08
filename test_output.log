@@ -1,0 +1,811 @@
+yarn install v1.22.22
+[1/4] Resolving packages...
+success Already up-to-date.
+Done in 0.04s.
+yarn run v1.22.22
+$ esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets
+
+  app/assets/builds/application.js      552.0kb
+  app/assets/builds/application.js.map    1.2mb
+
+Done in 0.19s.
+yarn install v1.22.22
+[1/4] Resolving packages...
+success Already up-to-date.
+Done in 0.04s.
+yarn run v1.22.22
+$ npx @tailwindcss/cli -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify
+npm warn Unknown env config "version-git-tag". This will stop working in the next major version of npm.
+npm warn Unknown env config "argv". This will stop working in the next major version of npm.
+npm warn Unknown env config "version-commit-hooks". This will stop working in the next major version of npm.
+npm warn Unknown env config "version-git-message". This will stop working in the next major version of npm.
+npm warn Unknown env config "version-tag-prefix". This will stop working in the next major version of npm.
+≈ tailwindcss v4.1.11
+
+Done in 71ms
+Done in 0.80s.
+Run options: --seed 22151
+
+# Running:
+
+...F
+
+Failure:
+NewsServiceTest#test_should_handle_network_errors [test/services/news_service_test.rb:219]:
+Expected "Exception from WebMock" to include "execution expired".
+
+bin/rails test test/services/news_service_test.rb:203
+
+.....F
+
+Failure:
+NewsServiceTest#test_should_handle_timeout_errors [test/services/news_service_test.rb:238]:
+Expected "execution expired" to include "timeout".
+
+bin/rails test test/services/news_service_test.rb:222
+
+.F
+
+Failure:
+NewsServiceTest#test_should_handle_invalid_JSON_response [test/services/news_service_test.rb:348]:
+Expected "unexpected token 'invalid' at line 1 column 1" to include "json".
+
+bin/rails test test/services/news_service_test.rb:328
+
+Since there is no EDITOR or BETTER_ERRORS_EDITOR environment variable, using Textmate by default.
+F
+
+Failure:
+AuthenticationFlowTest#test_user_cannot_access_other_user's_data_after_authentication [test/integration/authentication_flow_test.rb:369]:
+ActiveRecord::RecordNotFound expected but nothing was raised.
+
+bin/rails test test/integration/authentication_flow_test.rb:344
+
+..F
+
+Failure:
+AuthenticationFlowTest#test_admin_authentication_and_access [test/integration/authentication_flow_test.rb:246]:
+Expected response to be a <2XX: success>, but was a <500: Internal Server Error>
+
+bin/rails test test/integration/authentication_flow_test.rb:241
+
+.F
+
+Failure:
+AuthenticationFlowTest#test_brute_force_protection [test/integration/authentication_flow_test.rb:443]:
+Expected response to be a <2XX: success>, but was a <422: Unprocessable Content>
+
+bin/rails test test/integration/authentication_flow_test.rb:431
+
+....F
+
+Failure:
+AuthenticationFlowTest#test_user_account_deletion [test/integration/authentication_flow_test.rb:231]:
+Expected response to be a <2XX: success>, but was a <302: Found> redirect to <http://www.example.com/users/sign_in>
+Response body: 
+
+bin/rails test test/integration/authentication_flow_test.rb:222
+
+F
+
+Failure:
+AuthenticationFlowTest#test_invalid_login_credentials_are_rejected [test/integration/authentication_flow_test.rb:119]:
+Expected response to be a <2XX: success>, but was a <422: Unprocessable Content>
+
+bin/rails test test/integration/authentication_flow_test.rb:107
+
+F
+
+Failure:
+AuthenticationFlowTest#test_user_registration_validation [test/integration/authentication_flow_test.rb:403]:
+Expected response to be a <2XX: success>, but was a <422: Unprocessable Content>
+
+bin/rails test test/integration/authentication_flow_test.rb:393
+
+F
+
+Failure:
+AuthenticationFlowTest#test_password_reset_flow [test/integration/authentication_flow_test.rb:153]:
+Expected at least 1 element matching "div.notice", found 0.
+Expected 0 to be >= 1.
+
+bin/rails test test/integration/authentication_flow_test.rb:138
+
+.....F
+
+Failure:
+RefreshAllDataSourcesJobTest#test_should_only_process_active_data_sources [test/jobs/refresh_all_data_sources_job_test.rb:35]:
+1 jobs expected, but 4 were enqueued.
+Expected: 1
+  Actual: 4
+
+bin/rails test test/jobs/refresh_all_data_sources_job_test.rb:31
+
+.....F
+
+Failure:
+RefreshAllDataSourcesJobTest#test_should_handle_large_numbers_of_data_sources_efficiently [test/jobs/refresh_all_data_sources_job_test.rb:194]:
+21 jobs expected, but 24 were enqueued.
+Expected: 21
+  Actual: 24
+
+bin/rails test test/jobs/refresh_all_data_sources_job_test.rb:177
+
+.....F
+
+Failure:
+LocationServiceTest#test_should_handle_timeout_errors [test/services/location_service_test.rb:205]:
+Expected "execution expired" to include "timeout".
+
+bin/rails test test/services/location_service_test.rb:197
+
+.F
+
+Failure:
+LocationServiceTest#test_should_handle_invalid_JSON_response [test/services/location_service_test.rb:220]:
+Expected "unexpected token 'invalid' at line 1 column 1" to include "json".
+
+bin/rails test test/services/location_service_test.rb:208
+
+......F
+
+Failure:
+LocationServiceTest#test_should_handle_network_errors [test/services/location_service_test.rb:194]:
+Expected "Exception from WebMock" to include "execution expired".
+
+bin/rails test test/services/location_service_test.rb:186
+
+.../Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+F
+
+Failure:
+ProcessedPdfsControllerTest#test_should_handle_missing_variables_gracefully [test/controllers/processed_pdfs_controller_test.rb:145]:
+Expected "<div><h1>Invoice #001</h1><p>Bill to: John Doe</p></div>" to include "2024-01-15".
+
+bin/rails test test/controllers/processed_pdfs_controller_test.rb:128
+
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+F
+
+Failure:
+ProcessedPdfsControllerTest#test_should_include_Tailwind_CSS_in_generated_PDF [test/controllers/processed_pdfs_controller_test.rb:222]:
+Expected nil (NilClass) to respond to #include?.
+
+bin/rails test test/controllers/processed_pdfs_controller_test.rb:203
+
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+F
+
+Failure:
+ProcessedPdfsControllerTest#test_should_create_processed_pdf_with_valid_params [test/controllers/processed_pdfs_controller_test.rb:60]:
+`ProcessedPdf.count` didn't change by 1, but by 0.
+Expected: 4
+  Actual: 3
+
+bin/rails test test/controllers/processed_pdfs_controller_test.rb:53
+
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+F
+
+Failure:
+ProcessedPdfsControllerTest#test_should_get_new [test/controllers/processed_pdfs_controller_test.rb:38]:
+Expected: "Generate New PDF"
+  Actual: "Generate PDF from Template".
+Expected 0 to be >= 1.
+
+bin/rails test test/controllers/processed_pdfs_controller_test.rb:34
+
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+F
+
+Failure:
+ProcessedPdfsControllerTest#test_should_validate_processed_pdf_model_constraints [test/controllers/processed_pdfs_controller_test.rb:262]:
+Expected response to be a <3XX: redirect>, but was a <422: Unprocessable Content>
+
+bin/rails test test/controllers/processed_pdfs_controller_test.rb:245
+
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+F
+
+Failure:
+ProcessedPdfsControllerTest#test_should_show_processed_pdf_when_authenticated [test/controllers/processed_pdfs_controller_test.rb:31]:
+--- expected
++++ actual
+@@ -1 +1 @@
+-/PDF: monthly-report_\d{8}_\d{6}\.pdf/
++"Generated PDF"
+.
+Expected 0 to be >= 1.
+
+bin/rails test test/controllers/processed_pdfs_controller_test.rb:27
+
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+F
+
+Failure:
+ProcessedPdfsControllerTest#test_should_handle_template_rendering_with_variables [test/controllers/processed_pdfs_controller_test.rb:118]:
+Expected "<div><h1>Invoice #001</h1><p>Bill to: John Doe</p></div>" to include "2024-01-15".
+
+bin/rails test test/controllers/processed_pdfs_controller_test.rb:100
+
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+F
+
+Failure:
+ProcessedPdfsControllerTest#test_should_handle_PDF_generation_errors [test/controllers/processed_pdfs_controller_test.rb:96]:
+Expected at least 1 element matching "div.alert", found 0.
+Expected 0 to be >= 1.
+
+bin/rails test test/controllers/processed_pdfs_controller_test.rb:78
+
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+F
+
+Failure:
+ProcessedPdfsControllerTest#test_should_handle_empty_variables_hash [test/controllers/processed_pdfs_controller_test.rb:241]:
+Expected "<div><h1>Invoice #001</h1><p>Bill to: John Doe</p></div>" to include "{{date}}".
+
+bin/rails test test/controllers/processed_pdfs_controller_test.rb:226
+
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+F
+
+Failure:
+ProcessedPdfsControllerTest#test_should_handle_network_errors_during_PDF_generation [test/controllers/processed_pdfs_controller_test.rb:304]:
+Expected at least 1 element matching "div.alert", found 0.
+Expected 0 to be >= 1.
+
+bin/rails test test/controllers/processed_pdfs_controller_test.rb:288
+
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+F
+
+Failure:
+ProcessedPdfsControllerTest#test_should_preserve_HTML_structure_in_generated_content [test/controllers/processed_pdfs_controller_test.rb:200]:
+Expected false to be truthy.
+
+bin/rails test test/controllers/processed_pdfs_controller_test.rb:181
+
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+..F
+
+Failure:
+DataSourceIntegrationTest#test_complete_data_source_lifecycle_with_job_processing [test/integration/data_source_integration_test.rb:54]:
+Expected: 18.5
+  Actual: nil
+
+bin/rails test test/integration/data_source_integration_test.rb:11
+
+F
+
+Failure:
+DataSourceIntegrationTest#test_data_source_API_error_handling_in_job_processing [test/integration/data_source_integration_test.rb:226]:
+StandardError expected but nothing was raised.
+
+bin/rails test test/integration/data_source_integration_test.rb:211
+
+F
+
+Failure:
+DataSourceIntegrationTest#test_data_source_with_expired_data_triggers_refresh_job [test/integration/data_source_integration_test.rb:145]:
+Expected false to be truthy.
+
+bin/rails test test/integration/data_source_integration_test.rb:81
+
+F
+
+Failure:
+DataSourceIntegrationTest#test_concurrent_data_source_job_processing [test/integration/data_source_integration_test.rb:375]:
+Expected: 20
+  Actual: nil
+
+bin/rails test test/integration/data_source_integration_test.rb:323
+
+F
+
+Failure:
+DataSourceIntegrationTest#test_data_source_network_timeout_handling [test/integration/data_source_integration_test.rb:253]:
+Timeout::Error expected but nothing was raised.
+
+bin/rails test test/integration/data_source_integration_test.rb:237
+
+F
+
+Failure:
+DataSourceIntegrationTest#test_scheduled_data_source_refresh_simulation [test/integration/data_source_integration_test.rb:580]:
+Expected: 22
+  Actual: nil
+
+bin/rails test test/integration/data_source_integration_test.rb:485
+
+F
+
+Failure:
+DataSourceIntegrationTest#test_data_source_with_complex_configuration_and_custom_parameters [test/integration/data_source_integration_test.rb:320]:
+Expected: "us-east"
+  Actual: nil
+
+bin/rails test test/integration/data_source_integration_test.rb:264
+
+.F
+
+Failure:
+DataSourceIntegrationTest#test_data_source_integration_with_PDF_template_generation [test/integration/data_source_integration_test.rb:473]:
+Expected response to be a <3XX: redirect>, but was a <422: Unprocessable Content>
+
+bin/rails test test/integration/data_source_integration_test.rb:401
+
+....F
+
+Failure:
+PdfTemplatesControllerTest#test_should_not_create_pdf_template_with_invalid_params [test/controllers/pdf_templates_controller_test.rb:80]:
+Expected at least 1 element matching "div.error", found 0.
+Expected 0 to be >= 1.
+
+bin/rails test test/controllers/pdf_templates_controller_test.rb:67
+
+F
+
+Failure:
+PdfTemplatesControllerTest#test_should_limit_processed_PDFs_to_10_on_show_page [test/controllers/pdf_templates_controller_test.rb:261]:
+Expected between 1 and 10 elements matching ".processed-pdf", found 0.
+Expected 0 to be >= 1.
+
+bin/rails test test/controllers/pdf_templates_controller_test.rb:241
+
+..F
+
+Failure:
+PdfTemplatesControllerTest#test_should_not_destroy_other_user's_template [test/controllers/pdf_templates_controller_test.rb:179]:
+ActiveRecord::RecordNotFound expected but nothing was raised.
+
+bin/rails test test/controllers/pdf_templates_controller_test.rb:176
+
+F
+
+Failure:
+PdfTemplatesControllerTest#test_should_show_pdf_template [test/controllers/pdf_templates_controller_test.rb:87]:
+Expected: "Test Template"
+  Actual: "Monthly Report".
+Expected 0 to be >= 1.
+
+bin/rails test test/controllers/pdf_templates_controller_test.rb:83
+
+F
+
+Failure:
+PdfTemplatesControllerTest#test_should_get_edit [test/controllers/pdf_templates_controller_test.rb:110]:
+Expected at least 1 element matching "input[value='Test Template']", found 0.
+Expected 0 to be >= 1.
+
+bin/rails test test/controllers/pdf_templates_controller_test.rb:105
+
+..F
+
+Failure:
+PdfTemplatesControllerTest#test_should_show_any_template_for_admin_users [test/controllers/pdf_templates_controller_test.rb:102]:
+Expected: "Other User Template"
+  Actual: "Invoice Template".
+Expected 0 to be >= 1.
+
+bin/rails test test/controllers/pdf_templates_controller_test.rb:98
+
+..F
+
+Failure:
+PdfTemplatesControllerTest#test_should_not_get_edit_for_other_user's_template [test/controllers/pdf_templates_controller_test.rb:115]:
+ActiveRecord::RecordNotFound expected but nothing was raised.
+
+bin/rails test test/controllers/pdf_templates_controller_test.rb:113
+
+.....F
+
+Failure:
+PdfTemplatesControllerTest#test_should_not_show_other_user's_template_for_regular_users [test/controllers/pdf_templates_controller_test.rb:93]:
+ActiveRecord::RecordNotFound expected but nothing was raised.
+
+bin/rails test test/controllers/pdf_templates_controller_test.rb:91
+
+F
+
+Failure:
+PdfTemplatesControllerTest#test_should_not_update_other_user's_template [test/controllers/pdf_templates_controller_test.rb:159]:
+ActiveRecord::RecordNotFound expected but nothing was raised.
+
+bin/rails test test/controllers/pdf_templates_controller_test.rb:157
+
+.F
+
+Failure:
+PdfTemplatesControllerTest#test_should_display_recent_processed_PDFs_on_show_page [test/controllers/pdf_templates_controller_test.rb:238]:
+Expected exactly 5 elements matching ".processed-pdf", found 0.
+Expected: 5
+  Actual: 0
+
+bin/rails test test/controllers/pdf_templates_controller_test.rb:218
+
+...F
+
+Failure:
+PdfTemplatesControllerTest#test_should_handle_templates_with_no_processed_PDFs [test/controllers/pdf_templates_controller_test.rb:268]:
+Expected: /No PDFs generated yet/
+  Actual: "Date: {{date}}".
+Expected 0 to be >= 1.
+
+bin/rails test test/controllers/pdf_templates_controller_test.rb:264
+
+.F
+
+Failure:
+PdfTemplatesControllerTest#test_should_not_update_pdf_template_with_invalid_params [test/controllers/pdf_templates_controller_test.rb:151]:
+Expected at least 1 element matching "div.error", found 0.
+Expected 0 to be >= 1.
+
+bin/rails test test/controllers/pdf_templates_controller_test.rb:141
+
+........................F
+
+Failure:
+BaseApiServiceTest#test_should_allow_metadata_to_be_optional [test/services/base_api_service_test.rb:217]:
+Expected false to be truthy.
+
+bin/rails test test/services/base_api_service_test.rb:206
+
+F
+
+Failure:
+BaseApiServiceTest#test_should_handle_empty_parameters [test/services/base_api_service_test.rb:152]:
+Expected false to be truthy.
+
+bin/rails test test/services/base_api_service_test.rb:141
+
+E
+
+Error:
+BaseApiServiceTest#test_should_provide_default_error_handling:
+RuntimeError: Neutered Exception NotImplementedError: Subclasses must implement parse_response
+    app/services/base_api_service.rb:44:in 'BaseApiService#parse_response'
+    app/services/base_api_service.rb:17:in 'BaseApiService#fetch'
+    test/services/base_api_service_test.rb:177:in 'block in <class:BaseApiServiceTest>'
+
+bin/rails test test/services/base_api_service_test.rb:171
+
+.F
+
+Failure:
+BaseApiServiceTest#test_should_allow_subclasses_to_override_make_request [test/services/base_api_service_test.rb:135]:
+Expected false to be truthy.
+
+bin/rails test test/services/base_api_service_test.rb:120
+
+.F
+
+Failure:
+BaseApiServiceTest#test_should_call_make_request_when_fetching [test/services/base_api_service_test.rb:35]:
+Expected false to be truthy.
+
+bin/rails test test/services/base_api_service_test.rb:21
+
+.F
+
+Failure:
+BaseApiServiceTest#test_should_handle_make_request_returning_failure [test/services/base_api_service_test.rb:55]:
+--- expected
++++ actual
+@@ -1 +1 @@
+-"API request failed"
++"API request failed with status "
+
+
+bin/rails test test/services/base_api_service_test.rb:40
+
+F
+
+Failure:
+BaseApiServiceTest#test_should_handle_nil_parameters [test/services/base_api_service_test.rb:167]:
+Expected false to be truthy.
+
+bin/rails test test/services/base_api_service_test.rb:156
+
+.F
+
+Failure:
+BaseApiServiceTest#test_should_maintain_consistent_result_structure [test/services/base_api_service_test.rb:115]:
+Expected false to be truthy.
+
+bin/rails test test/services/base_api_service_test.rb:98
+
+....F
+
+Failure:
+PdfGenerationFlowTest#test_template_listing_and_pagination_behavior [test/integration/pdf_generation_flow_test.rb:408]:
+Newer templates should appear first
+
+bin/rails test test/integration/pdf_generation_flow_test.rb:385
+
+F
+
+Failure:
+PdfGenerationFlowTest#test_template_with_complex_HTML_and_CSS_classes [test/integration/pdf_generation_flow_test.rb:367]:
+Expected response to be a <3XX: redirect>, but was a <400: Bad Request>
+
+bin/rails test test/integration/pdf_generation_flow_test.rb:272
+
+F
+
+Failure:
+PdfGenerationFlowTest#test_PDF_generation_with_missing_variables [test/integration/pdf_generation_flow_test.rb:235]:
+Expected response to be a <3XX: redirect>, but was a <400: Bad Request>
+
+bin/rails test test/integration/pdf_generation_flow_test.rb:206
+
+F
+
+Failure:
+PdfGenerationFlowTest#test_admin_user_can_access_and_manage_all_templates [test/integration/pdf_generation_flow_test.rb:155]:
+Expected response to be a <2XX: success>, but was a <302: Found> redirect to <http://www.example.com/users/sign_in>
+Response body: 
+
+bin/rails test test/integration/pdf_generation_flow_test.rb:136
+
+F
+
+Failure:
+PdfGenerationFlowTest#test_PDF_generation_error_handling [test/integration/pdf_generation_flow_test.rb:264]:
+Expected response to be a <422: unprocessable_entity>, but was a <400: Bad Request>.
+Expected: 422
+  Actual: 400
+
+bin/rails test test/integration/pdf_generation_flow_test.rb:245
+
+F
+
+Failure:
+PdfGenerationFlowTest#test_data_source_integration_with_PDF_generation [test/integration/pdf_generation_flow_test.rb:480]:
+Expected response to be a <3XX: redirect>, but was a <422: Unprocessable Content>
+
+bin/rails test test/integration/pdf_generation_flow_test.rb:415
+
+F
+
+Failure:
+PdfGenerationFlowTest#test_user_cannot_access_other_user's_templates [test/integration/pdf_generation_flow_test.rb:197]:
+ActiveRecord::RecordNotFound expected but nothing was raised.
+
+bin/rails test test/integration/pdf_generation_flow_test.rb:174
+
+F
+
+Failure:
+PdfGenerationFlowTest#test_complete_PDF_generation_workflow_for_regular_user [test/integration/pdf_generation_flow_test.rb:110]:
+Expected response to be a <3XX: redirect>, but was a <422: Unprocessable Content>
+
+bin/rails test test/integration/pdf_generation_flow_test.rb:11
+
+F
+
+Failure:
+PdfGenerationTest#test_should_generate_PDF_with_Grover [test/integration/pdf_generation_test.rb:28]:
+Expected response to be a <3XX: redirect>, but was a <400: Bad Request>
+
+bin/rails test test/integration/pdf_generation_test.rb:16
+
+F
+
+Failure:
+PdfGenerationTest#test_should_handle_PDF_generation_errors_gracefully [test/integration/pdf_generation_test.rb:52]:
+Expected response to be a <422: unprocessable_entity>, but was a <400: Bad Request>.
+Expected: 422
+  Actual: 400
+
+bin/rails test test/integration/pdf_generation_test.rb:41
+
+F
+
+Failure:
+StockServiceTest#test_should_handle_missing_Global_Quote_data [test/services/stock_service_test.rb:274]:
+Expected "API request failed with status 200" to include "Global Quote".
+
+bin/rails test test/services/stock_service_test.rb:250
+
+F
+
+Failure:
+StockServiceTest#test_should_handle_rate_limit_response [test/services/stock_service_test.rb:166]:
+Expected "Thank you for using Alpha Vantage! Our standard API call frequency is 5 calls per minute and 500 calls per day." to include "rate limit".
+
+bin/rails test test/services/stock_service_test.rb:146
+
+..E
+
+Error:
+StockServiceTest#test_should_work_with_different_API_endpoints:
+RuntimeError: Neutered Exception WebMock::NetConnectNotAllowedError: Real HTTP connections are disabled. Unregistered request: GET https://www.alphavantage.co/query?apikey=test_api_key&function=GLOBAL_QUOTE&symbol=AAPL with headers {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}
+
+You can stub this request with the following snippet:
+
+stub_request(:get, "https://www.alphavantage.co/query?apikey=test_api_key&function=GLOBAL_QUOTE&symbol=AAPL").
+  with(
+    headers: {
+	  'Accept'=>'*/*',
+	  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+	  'User-Agent'=>'Ruby'
+    }).
+  to_return(status: 200, body: "", headers: {})
+
+registered request stubs:
+
+stub_request(:get, "https://custom-api.example.com/quote?apikey=test_api_key&function=GLOBAL_QUOTE&symbol=AAPL")
+
+============================================================
+    app/services/stock_service.rb:11:in 'StockService#make_request'
+    app/services/base_api_service.rb:12:in 'BaseApiService#fetch'
+    test/services/stock_service_test.rb:392:in 'block in <class:StockServiceTest>'
+
+bin/rails test test/services/stock_service_test.rb:363
+
+...F
+
+Failure:
+StockServiceTest#test_should_handle_HTTP_error_status [test/services/stock_service_test.rb:181]:
+Expected "API request failed with status 500" to include "HTTP 500".
+
+bin/rails test test/services/stock_service_test.rb:169
+
+F
+
+Failure:
+StockServiceTest#test_should_handle_invalid_JSON_response [test/services/stock_service_test.rb:215]:
+Expected "unexpected token 'invalid' at line 1 column 1" to include "json".
+
+bin/rails test test/services/stock_service_test.rb:199
+
+.F
+
+Failure:
+StockServiceTest#test_should_handle_network_timeout [test/services/stock_service_test.rb:196]:
+Expected "execution expired" to include "timeout".
+
+bin/rails test test/services/stock_service_test.rb:184
+
+........................./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+F
+
+Failure:
+ProcessedPdfTest#test_should_order_by_created_at_descending_by_default [test/models/processed_pdf_test.rb:257]:
+--- expected
++++ actual
+@@ -1 +1 @@
+-#<ProcessedPdf id: 663741522, pdf_template_id: 980190963, original_html: "<h1>New Document</h1>", variables_used: {}, generated_at: "2025-07-08 16:09:06.677852000 +0000", metadata: {}, created_at: "2025-07-08 16:08:06.680888000 +0000", updated_at: "2025-07-08 16:09:06.680992000 +0000">
++#<ProcessedPdf id: 663741520, pdf_template_id: 980190963, original_html: "<h1>Hello John</h1><p>Welcome to London</p>", variables_used: {"name" => "John", "city" => "London"}, generated_at: "2025-07-08 16:09:06.670601000 +0000", metadata: {"generated_by" => "user", "format" => "A4"}, created_at: "2025-07-08 16:09:06.670636000 +0000", updated_at: "2025-07-08 16:09:06.673506000 +0000">
+
+
+bin/rails test test/models/processed_pdf_test.rb:227
+
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+/Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+./Users/abdulachik/.asdf/installs/ruby/3.4.2/lib/ruby/gems/3.4.0/gems/marcel-1.0.4/lib/marcel/magic.rb:120: warning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)
+....F
+
+Failure:
+ApplicationControllerTest#test_should_handle_authentication_with_different_user_types [test/controllers/application_controller_test.rb:78]:
+Expected response to be a <2XX: success>, but was a <302: Found> redirect to <http://www.example.com/users/sign_in>
+Response body: 
+
+bin/rails test test/controllers/application_controller_test.rb:62
+
+.............F
+
+Failure:
+FetchDataSourceJobTest#test_should_handle_timeout_errors_gracefully [test/jobs/fetch_data_source_job_test.rb:100]:
+[Timeout::Error] exception expected, not
+Class: <WebMock::NetConnectNotAllowedError>
+Message: <"Real HTTP connections are disabled. Unregistered request: GET https://api.openweathermap.org/data/2.5/weather?appid=test_key&q=London&units=metric with headers {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}\n\nYou can stub this request with the following snippet:\n\nstub_request(:get, \"https://api.openweathermap.org/data/2.5/weather?appid=test_key&q=London&units=metric\").\n  with(\n    headers: {\n\t  'Accept'=>'*/*',\n\t  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',\n\t  'User-Agent'=>'Ruby'\n    }).\n  to_return(status: 200, body: \"\", headers: {})\n\n============================================================">
+---Backtrace---
+app/services/weather_service.rb:13:in 'WeatherService#make_request'
+app/services/base_api_service.rb:12:in 'BaseApiService#fetch'
+app/models/data_source.rb:18:in 'DataSource#fetch_data'
+app/jobs/fetch_data_source_job.rb:6:in 'FetchDataSourceJob#perform'
+test/jobs/fetch_data_source_job_test.rb:101:in 'block (3 levels) in <class:FetchDataSourceJobTest>'
+test/jobs/fetch_data_source_job_test.rb:100:in 'block (2 levels) in <class:FetchDataSourceJobTest>'
+test/jobs/fetch_data_source_job_test.rb:99:in 'block in <class:FetchDataSourceJobTest>'
+---------------
+
+bin/rails test test/jobs/fetch_data_source_job_test.rb:97
+
+.F
+
+Failure:
+FetchDataSourceJobTest#test_should_handle_fetch_data_failure [test/jobs/fetch_data_source_job_test.rb:56]:
+[StandardError] exception expected, not
+Class: <WebMock::NetConnectNotAllowedError>
+Message: <"Real HTTP connections are disabled. Unregistered request: GET https://api.openweathermap.org/data/2.5/weather?appid=test_key&q=London&units=metric with headers {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}\n\nYou can stub this request with the following snippet:\n\nstub_request(:get, \"https://api.openweathermap.org/data/2.5/weather?appid=test_key&q=London&units=metric\").\n  with(\n    headers: {\n\t  'Accept'=>'*/*',\n\t  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',\n\t  'User-Agent'=>'Ruby'\n    }).\n  to_return(status: 200, body: \"\", headers: {})\n\n============================================================">
+---Backtrace---
+app/services/weather_service.rb:13:in 'WeatherService#make_request'
+app/services/base_api_service.rb:12:in 'BaseApiService#fetch'
+app/models/data_source.rb:18:in 'DataSource#fetch_data'
+app/jobs/fetch_data_source_job.rb:6:in 'FetchDataSourceJob#perform'
+test/jobs/fetch_data_source_job_test.rb:57:in 'block (3 levels) in <class:FetchDataSourceJobTest>'
+test/jobs/fetch_data_source_job_test.rb:56:in 'block (2 levels) in <class:FetchDataSourceJobTest>'
+test/jobs/fetch_data_source_job_test.rb:55:in 'block in <class:FetchDataSourceJobTest>'
+---------------
+
+bin/rails test test/jobs/fetch_data_source_job_test.rb:53
+
+F
+
+Failure:
+FetchDataSourceJobTest#test_should_call_fetch_data_on_the_data_source [test/jobs/fetch_data_source_job_test.rb:85]:
+Expected false to be truthy.
+
+bin/rails test test/jobs/fetch_data_source_job_test.rb:68
+
+..F
+
+Failure:
+FetchDataSourceJobTest#test_should_retry_on_retryable_errors [test/jobs/fetch_data_source_job_test.rb:243]:
+[StandardError] exception expected, not
+Class: <WebMock::NetConnectNotAllowedError>
+Message: <"Real HTTP connections are disabled. Unregistered request: GET https://api.openweathermap.org/data/2.5/weather?appid=test_key&q=London&units=metric with headers {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}\n\nYou can stub this request with the following snippet:\n\nstub_request(:get, \"https://api.openweathermap.org/data/2.5/weather?appid=test_key&q=London&units=metric\").\n  with(\n    headers: {\n\t  'Accept'=>'*/*',\n\t  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',\n\t  'User-Agent'=>'Ruby'\n    }).\n  to_return(status: 200, body: \"\", headers: {})\n\n============================================================">
+---Backtrace---
+app/services/weather_service.rb:13:in 'WeatherService#make_request'
+app/services/base_api_service.rb:12:in 'BaseApiService#fetch'
+app/models/data_source.rb:18:in 'DataSource#fetch_data'
+app/jobs/fetch_data_source_job.rb:6:in 'FetchDataSourceJob#perform'
+test/jobs/fetch_data_source_job_test.rb:244:in 'block (2 levels) in <class:FetchDataSourceJobTest>'
+test/jobs/fetch_data_source_job_test.rb:243:in 'block in <class:FetchDataSourceJobTest>'
+---------------
+
+bin/rails test test/jobs/fetch_data_source_job_test.rb:230
+
+.F
+
+Failure:
+FetchDataSourceJobTest#test_should_handle_network_errors_gracefully [test/jobs/fetch_data_source_job_test.rb:91]:
+[SocketError] exception expected, not
+Class: <WebMock::NetConnectNotAllowedError>
+Message: <"Real HTTP connections are disabled. Unregistered request: GET https://api.openweathermap.org/data/2.5/weather?appid=test_key&q=London&units=metric with headers {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}\n\nYou can stub this request with the following snippet:\n\nstub_request(:get, \"https://api.openweathermap.org/data/2.5/weather?appid=test_key&q=London&units=metric\").\n  with(\n    headers: {\n\t  'Accept'=>'*/*',\n\t  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',\n\t  'User-Agent'=>'Ruby'\n    }).\n  to_return(status: 200, body: \"\", headers: {})\n\n============================================================">
+---Backtrace---
+app/services/weather_service.rb:13:in 'WeatherService#make_request'
+app/services/base_api_service.rb:12:in 'BaseApiService#fetch'
+app/models/data_source.rb:18:in 'DataSource#fetch_data'
+app/jobs/fetch_data_source_job.rb:6:in 'FetchDataSourceJob#perform'
+test/jobs/fetch_data_source_job_test.rb:92:in 'block (3 levels) in <class:FetchDataSourceJobTest>'
+test/jobs/fetch_data_source_job_test.rb:91:in 'block (2 levels) in <class:FetchDataSourceJobTest>'
+test/jobs/fetch_data_source_job_test.rb:90:in 'block in <class:FetchDataSourceJobTest>'
+---------------
+
+bin/rails test test/jobs/fetch_data_source_job_test.rb:88
+
+..
+
+Finished in 4.130711s, 61.0064 runs/s, 162.9259 assertions/s.
+252 runs, 673 assertions, 75 failures, 2 errors, 0 skips

@@ -67,16 +67,13 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     
     sign_out @user
     
-    # Test with admin user if available
-    if defined?(AdminUser)
-      admin = admin_users(:one)
-      sign_in admin
-      
-      # Admin users might have different access patterns
-      # This depends on how your authentication is set up
-      get pdf_templates_url
-      assert_response :success
-    end
+    # Test with admin user
+    admin = users(:admin)
+    sign_in admin
+    
+    # Admin users have the same authentication pattern but may see different content
+    get pdf_templates_url
+    assert_response :success
   end
 
   test "should properly handle sign out" do

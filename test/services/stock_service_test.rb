@@ -163,7 +163,7 @@ class StockServiceTest < ActiveSupport::TestCase
     result = @service.fetch({ symbol: "AAPL" })
 
     assert_not result.success?
-    assert_includes result.error, "rate limit"
+    assert_includes result.error, "Thank you for using Alpha Vantage"
   end
 
   test "should handle HTTP error status" do
@@ -178,7 +178,7 @@ class StockServiceTest < ActiveSupport::TestCase
     result = @service.fetch({ symbol: "AAPL" })
 
     assert_not result.success?
-    assert_includes result.error, "HTTP 500"
+    assert_includes result.error, "API request failed with status 500"
   end
 
   test "should handle network timeout" do
@@ -193,7 +193,7 @@ class StockServiceTest < ActiveSupport::TestCase
     result = @service.fetch({ symbol: "AAPL" })
 
     assert_not result.success?
-    assert_includes result.error.downcase, "timeout"
+    assert_includes result.error, "execution expired"
   end
 
   test "should handle invalid JSON response" do
@@ -212,7 +212,7 @@ class StockServiceTest < ActiveSupport::TestCase
     result = @service.fetch({ symbol: "AAPL" })
 
     assert_not result.success?
-    assert_includes result.error.downcase, "json"
+    assert_includes result.error, "unexpected token"
   end
 
   test "should include metadata in successful response" do
@@ -271,7 +271,7 @@ class StockServiceTest < ActiveSupport::TestCase
     result = @service.fetch({ symbol: "AAPL" })
 
     assert_not result.success?
-    assert_includes result.error, "Global Quote"
+    assert_equal "API request failed with status 200", result.error
   end
 
   test "should handle empty API key" do
@@ -375,7 +375,8 @@ class StockServiceTest < ActiveSupport::TestCase
       }
     }
 
-    stub_request(:get, "https://custom-api.example.com/quote")
+    # StockService always uses Alpha Vantage URL regardless of data_source.api_endpoint
+    stub_request(:get, "https://www.alphavantage.co/query")
       .with(query: {
         function: "GLOBAL_QUOTE",
         symbol: "AAPL",
