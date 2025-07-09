@@ -12,17 +12,20 @@ jobs:
     environment: production
     env:
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-      SERVICE_ID: ${{ secrets.RAILWAY_SERVICE_NAME }}
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Deploy to Railway
+    - name: Deploy Web Service
       run: |
-        railway up --service=${{ env.SERVICE_ID }} --environment=production --detach
+        railway up --service=pdfy-web --environment=production --detach
+
+    - name: Deploy Worker Service  
+      run: |
+        railway up --service=pdfy-worker --environment=production --detach
 
     - name: Health check
       run: |
-        echo "Deployment completed successfully!"
-        echo "Service deployed to: ${{ secrets.RAILWAY_PUBLIC_URL }}"
+        echo "Web and Worker services deployed successfully!"
+        echo "Web service: ${{ secrets.RAILWAY_PUBLIC_URL }}"

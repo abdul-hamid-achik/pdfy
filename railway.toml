@@ -1,5 +1,5 @@
-# Railway deployment configuration for PDFy
-# Documentation: https://docs.railway.com/reference/config-as-code
+# Railway configuration for Web Service (pdfy-web)
+# For Worker service, use railway-worker.toml
 
 [build]
 builder = "DOCKERFILE"
