@@ -85,15 +85,6 @@ jobs:
         PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
       run: |
         bin/rails test:all
-        
-    - name: Run system tests
-      env:
-        DATABASE_URL: postgres://postgres:postgres@localhost:5432/pdfy_test
-        REDIS_URL: redis://localhost:6379/0
-        CHROME_BIN: /usr/bin/chromium-browser
-        PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
-      run: |
-        bin/rails test:system
 
     - name: Upload coverage reports
       uses: actions/upload-artifact@v4
