@@ -1,0 +1,10 @@
+# Railway configuration for Sidekiq Worker Service
+# This file should be used when deploying the worker service
+
+[build]
+builder = "DOCKERFILE"
+
+[deploy]
+startCommand = "bundle exec sidekiq -C config/sidekiq.yml"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3

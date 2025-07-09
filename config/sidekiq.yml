@@ -1,6 +1,13 @@
 :concurrency: 5
+:timeout: 30
+
 :queues:
   - critical
   - default
   - low
-  - mailers
+
+production:
+  :concurrency: 10
+
+development:
+  :concurrency: 5
