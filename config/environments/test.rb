@@ -52,6 +52,10 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
 
   # ActiveRecord encryption keys are now stored in test credentials
+  # For CI, use environment variables or hardcoded test values
+  config.active_record.encryption.primary_key = ENV['ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY'] || "test_primary_key_32_bytes_exact!"
+  config.active_record.encryption.deterministic_key = ENV['ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY'] || "test_deterministic_key_32_bytes!"
+  config.active_record.encryption.key_derivation_salt = ENV['ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT'] || "test_key_derivation_salt_32bytes"
 
   # Use test adapter for Active Job testing
   config.active_job.queue_adapter = :test
