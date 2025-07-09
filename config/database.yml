@@ -60,16 +60,30 @@ test:
 production:
   primary: &primary_production
     <<: *default
+    <% if ENV["DATABASE_URL"] %>
     url: <%= ENV["DATABASE_URL"] %>
+    <% end %>
   cache:
     <<: *primary_production
+    <% if ENV["DATABASE_URL"] %>
+    url: <%= ENV["DATABASE_URL"].sub(/\/[^\/]+(\?|$)/, '/pdfy_production_cache\1') %>
+    <% else %>
     database: pdfy_production_cache
+    <% end %>
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
+    <% if ENV["DATABASE_URL"] %>
+    url: <%= ENV["DATABASE_URL"].sub(/\/[^\/]+(\?|$)/, '/pdfy_production_queue\1') %>
+    <% else %>
     database: pdfy_production_queue
+    <% end %>
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
+    <% if ENV["DATABASE_URL"] %>
+    url: <%= ENV["DATABASE_URL"].sub(/\/[^\/]+(\?|$)/, '/pdfy_production_cable\1') %>
+    <% else %>
     database: pdfy_production_cable
+    <% end %>
     migrations_paths: db/cable_migrate
