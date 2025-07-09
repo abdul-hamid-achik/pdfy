@@ -81,6 +81,13 @@ docker-compose up --build
 docker-compose exec web bin/rails db:create db:migrate db:seed
 ```
 
+**Note**: The web service now builds both CSS and JavaScript assets on startup. For active development with live asset reloading, use:
+```bash
+docker-compose --profile assets up --build
+```
+
+**Redis Port**: The Redis service runs on port 6380 (instead of 6379) to avoid conflicts with other Redis instances.
+
 ### Local Development
 
 1. Clone the repository:

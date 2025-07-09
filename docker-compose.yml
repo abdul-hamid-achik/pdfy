@@ -20,7 +20,7 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - "6380:6379"  # Changed from 6379 to 6380 to avoid conflicts
     volumes:
       - redis_data:/data
     healthcheck:
@@ -48,7 +48,7 @@ services:
 
   web:
     build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p ${PORT:-5050}"
+    command: bash -c "rm -f tmp/pids/server.pid && yarn build:css && yarn build && bundle exec rails server -b 0.0.0.0 -p ${PORT:-5050}"
     volumes:
       - .:/rails
       - bundle_cache:/usr/local/bundle
@@ -78,23 +78,16 @@ services:
     stdin_open: true
     tty: true
 
-  css:
+  assets:
     build: .
-    command: yarn build:css --watch
+    command: bash -c "yarn build:css --watch & yarn build --watch & wait"
     volumes:
       - .:/rails
       - node_modules:/rails/node_modules
     environment:
       RAILS_ENV: development
-
-  js:
-    build: .
-    command: yarn build --watch
-    volumes:
-      - .:/rails
-      - node_modules:/rails/node_modules
-    environment:
-      RAILS_ENV: development
+    profiles:
+      - assets  # Optional service for asset watching in development
 
   sidekiq:
     build: .

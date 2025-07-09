@@ -21,6 +21,8 @@ mountPath = "/app/storage"
 [environments.production.variables]
 STORAGE_ROOT = "/app/storage"
 RAILS_ENV = "production"
+DATABASE_URL = "${{Postgres.DATABASE_URL}}"
+REDIS_URL = "${{Redis.REDIS_URL}}"
 
 [environments.production.deploy]
 startCommand = "bundle exec rails db:migrate && bundle exec rails db:conditional_seed && bin/rails server -b 0.0.0.0 -p $PORT"
