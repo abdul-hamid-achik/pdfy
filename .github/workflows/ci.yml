@@ -73,7 +73,6 @@ jobs:
     - name: Setup database
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/pdfy_test
-        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
       run: |
         bin/rails db:create
         bin/rails db:schema:load
@@ -82,7 +81,6 @@ jobs:
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/pdfy_test
         REDIS_URL: redis://localhost:6379/0
-        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         CHROME_BIN: /usr/bin/chromium-browser
         PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
       run: |
@@ -92,7 +90,6 @@ jobs:
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/pdfy_test
         REDIS_URL: redis://localhost:6379/0
-        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         CHROME_BIN: /usr/bin/chromium-browser
         PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
       run: |
